@@ -30,5 +30,12 @@ export default class ProductController{
 
     getOneProduct(req,res){
         //using id of product.
+        const id = parseInt(req.params.id);
+        const product = ProductModel.get(id);
+        if(!product){
+            res.status(404).send({message: "Product not found"});
+        }else{
+            res.status(200).send(product);
+        }
     }
 }

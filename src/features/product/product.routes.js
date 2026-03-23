@@ -19,4 +19,7 @@ router.post("/",
      productController.addProduct
 );
 
+//to get a single product by id.
+router.get("/:id", productController.getOneProduct);
+
 export default router;
