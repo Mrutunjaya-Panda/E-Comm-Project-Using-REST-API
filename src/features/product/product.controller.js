@@ -38,4 +38,17 @@ export default class ProductController{
             res.status(200).send(product);
         }
     }
+
+    //to acieve filtering we will use query parameters,
+   // as the user is not compliancent to send the filter parameters in the body of the request, so we will use query parameters for filtering.
+  //for eg:- user may want to filter based on min price and max price, not category, so we will use query parameters for filtering.
+
+    filterProducts(req,res){
+        //retrieve the filter parameters from query parameters.
+        const minPrice = parseFloat(req.query.minPrice);
+        const maxPrice = parseFloat(req.query.maxPrice);
+        const category = req.query.category;
+        const filteredProducts = ProductModel.filter(minPrice, maxPrice, category);
+        res.status(200).send(filteredProducts);
+    }
 }

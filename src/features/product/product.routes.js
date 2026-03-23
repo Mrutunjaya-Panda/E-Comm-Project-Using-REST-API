@@ -19,7 +19,14 @@ router.post("/",
      productController.addProduct
 );
 
+// //to get a single product by id.
+// router.get("/:id", productController.getOneProduct);
+
+//localhost:3200/api/products/filter?minPrice=10&maxPrice=50&category=category1
+router.get("/filter", productController.filterProducts);
+
 //to get a single product by id.
 router.get("/:id", productController.getOneProduct);
 
+//4. Export the router.
 export default router;
