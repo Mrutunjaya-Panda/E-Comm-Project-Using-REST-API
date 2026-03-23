@@ -1,5 +1,6 @@
 //here we will create our server using express.
 import express from 'express';
+import bodyParser from 'body-parser';
 //import ProductController from './src/features/product/product.controller';
 //import * as ProductRouter from './src/features/product/product.routes.js';
 
@@ -7,6 +8,10 @@ import ProductRouter from './src/features/product/product.routes.js';
 //const productController = new ProductController();
 //creating an instance of express.
 const server = express();
+
+const jsonParser = bodyParser.json();
+//to parse the body of the request in JSON format for POST requests, we need to use body-parser middleware of express.
+server.use(jsonParser);
 
 
 //Routes

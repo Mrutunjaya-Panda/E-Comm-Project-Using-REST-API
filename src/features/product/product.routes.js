@@ -1,8 +1,9 @@
 //To manage routes/paths to productController.
 
-import ProductController from './product.controller.js';
+import ProductController from "./product.controller.js";
+import upload from "../../middlewares/fileupload.middleware.js";
 // 1. Import express.
-import express from 'express';
+import express from "express";
 
 //2. Get router from express/ Initialize Express router.
 const router = express.Router();
@@ -10,8 +11,12 @@ const router = express.Router();
 // localhost:3200/api/products/
 const productController = new ProductController();
 //3. Define routes and thier handlers.
-router.get('/', productController.getAllProducts);
-router.post('/', productController.addProduct);
+router.get("/", productController.getAllProducts);
 
+//adding a new product with file upload using multer(fileupload) middleware.
+router.post("/",
+    upload.single('imageUrl'), // Assuming the file field in the form is named 'imageUrl'
+     productController.addProduct
+);
 
 export default router;

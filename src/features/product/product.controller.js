@@ -9,7 +9,19 @@ export default class ProductController{
     }
 
     addProduct(req,res){
+        // console.log(req.body);//will give undefined if we will not parse the body of the rquest by using body-parser middleware of express.
+        // console.log("This is a Post request");
+        // res.status(200).send("Post request received");
 
+        const {name, price, sizes} = req.body;
+        const newProduct = {
+            name: name,
+            price: parseFloat(price),
+            sizes: sizes.split(',').map(size => size.trim()), // Convert comma-separated string to an array of sizes
+            imageUrl: req.file ? req.file.filename : null // Assuming you are using multer for file uploads
+        }
+        const addedProduct = ProductModel.add(newProduct);
+        res.status(201).send(addedProduct);
     }
 
     rateProduct(req,res){

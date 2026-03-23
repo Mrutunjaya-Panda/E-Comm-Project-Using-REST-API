@@ -10,8 +10,19 @@ export default class ProductModel{
         this.sizes = sizes;
     }
 
+    //function to return single product by id.
+
     static GetAll(){
         return products;
+    }
+
+    //change the add method for uploaded file
+    static add(product){
+      //when we are creating a new product, it is server responsibility to generate the id for the product, so we will generate the id by using the length of the products array + 1/ Date.now().
+      //when we will be using database, then we will be using the auto-increment feature of the database to generate the id for the product.
+      product.id = products.length + 1;
+      products.push(product);
+      return product;
     }
 }
 
