@@ -7,6 +7,8 @@ import bodyParser from 'body-parser';
 import ProductRouter from './src/features/product/product.routes.js';
 //const productController = new ProductController();
 //creating an instance of express.
+
+import userRouter from './src/features/user/user.routes.js';
 const server = express();
 
 const jsonParser = bodyParser.json();
@@ -25,6 +27,7 @@ server.use(jsonParser);
 //or 
 // server.use() expects a router or middleware function, not an object with a default property.
 server.use("/api/products", ProductRouter);
+server.use("/api/users", userRouter);
 
 //default request handler
 server.get('/', (req,res) => {

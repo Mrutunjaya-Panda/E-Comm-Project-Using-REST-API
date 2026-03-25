@@ -1,0 +1,13 @@
+next set of API creation
+
+//These are accessed or used when user Logs In(This is where we will look how to secure the API and how to use JWT token for authentication and authorization)
+like:-
+1. Rate Product
+2. Add items to Cart 
+3. Get items of Cart 
+4. Remove items from cart.
+
+//two APIS
+UserController
+1. signUp - Email, Name, Password, TypeOfUser(customer, seller)
+2. signIn/login - (Email, Password)
