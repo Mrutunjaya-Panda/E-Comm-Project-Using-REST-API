@@ -9,6 +9,7 @@ import ProductRouter from './src/features/product/product.routes.js';
 //creating an instance of express.
 
 import userRouter from './src/features/user/user.routes.js';
+import basicAuth from './src/middlewares/basicAuth.middleware.js';
 const server = express();
 
 const jsonParser = bodyParser.json();
@@ -26,7 +27,7 @@ server.use(jsonParser);
 // server.use("/api/products", ProductRouter.default);
 //or 
 // server.use() expects a router or middleware function, not an object with a default property.
-server.use("/api/products", ProductRouter);
+server.use("/api/products",basicAuth, ProductRouter);
 server.use("/api/users", userRouter);
 
 //default request handler
