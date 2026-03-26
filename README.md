@@ -46,18 +46,49 @@ Client → Request → [Auth Middleware] → Route Handler → Response
 
 ---
 
-## 🛠️ Tech Stack
-- Node.js
-- Express.js
-- Middleware (Custom Basic Auth)
+## 🧠 How Basic Authentication Works
+
+### 📌 Step-by-Step Flow
+
+1. Client sends credentials in headers:
+Authorization: Basic <Base64Encoded(username:password)>
+2. Server:
+- Extracts the `Authorization` header  
+- Removes `"Basic "` prefix  
+- Decodes Base64 string  
+- Splits into `username:password`  
+- Verifies credentials from database  
 
 ---
 
-## 📌 Summary
+## 🔍 Base64 Encoding Explained
 
-This branch improves the API by:
-- Adding **user registration & login**
-- Securing routes with **Basic Authentication**
-- Introducing **middleware-based architecture**
+Base64 is used to encode credentials before sending them in headers.
+
+### 👉 Example
+email: test@test.com
+password: test123
+
 
 ---
+
+## 💻 Code Insight (from Middleware)
+
+```js
+const authHeader = req.headers["authorization"];
+
+const base64Credentials = authHeader.replace("Basic ", "");
+const decodedCreds = Buffer.from(base64Credentials, "base64").toString("utf-8");
+
+const [email, password] = decodedCreds.split(":");
+```
+✅ What’s happening here:
+Buffer.from(..., "base64") → decodes Base64 string
+.toString("utf-8") → converts to readable format
+.split(":") → extracts email & password
+⚙️ Why Middleware is Important
+🔐 Centralized authentication logic
+♻️ Reusable across multiple routes
+🧼 Keeps controllers clean
+🚧 Acts as a security layer before accessing resources
+
