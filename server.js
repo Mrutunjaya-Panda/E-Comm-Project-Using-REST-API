@@ -10,6 +10,7 @@ import ProductRouter from './src/features/product/product.routes.js';
 
 import userRouter from './src/features/user/user.routes.js';
 import basicAuth from './src/middlewares/basicAuth.middleware.js';
+import jwtAuth from './src/middlewares/jwt.middleware.js';
 const server = express();
 
 const jsonParser = bodyParser.json();
@@ -27,7 +28,8 @@ server.use(jsonParser);
 // server.use("/api/products", ProductRouter.default);
 //or 
 // server.use() expects a router or middleware function, not an object with a default property.
-server.use("/api/products",basicAuth, ProductRouter);
+server.use("/api/products",jwtAuth, ProductRouter);
+//server.use("/api/products",basicAuth, ProductRouter);
 server.use("/api/users", userRouter);
 
 //default request handler
