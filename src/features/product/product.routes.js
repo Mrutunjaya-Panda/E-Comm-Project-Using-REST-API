@@ -10,6 +10,9 @@ const router = express.Router();
 
 // localhost:3200/api/products/
 const productController = new ProductController();
+//for rating
+router.post("/rate", productController.rateProduct);
+
 //3. Define routes and thier handlers.
 router.get("/", productController.getAllProducts);
 

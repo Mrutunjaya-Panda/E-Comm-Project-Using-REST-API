@@ -25,7 +25,16 @@ export default class ProductController{
     }
 
     rateProduct(req,res){
-
+        //we can receive from either request body or query parameters
+        const userId = (req.query.userId);
+        const productId = (req.query.productId);
+        const rating = (req.query.rating);
+        const result = ProductModel.rateProduct(userId, productId, rating);
+        if(result.error){
+            res.status(400).send({message: result.error});
+        }else{
+            res.status(200).send({message: "Product rated successfully"});
+        }
     }
 
     getOneProduct(req,res){

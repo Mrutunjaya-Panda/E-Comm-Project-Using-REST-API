@@ -1,3 +1,5 @@
+import UserModel from "../user/user.model.js";
+
 export default class ProductModel {
   constructor(id, name, desc, price, imageUrl, category, sizes) {
     this.id = id;
@@ -38,6 +40,44 @@ export default class ProductModel {
       );
     });
     return result;
+  }
+
+  static rateProduct(userId, productId, rating) {
+    //1. Validate user and product existence.
+    const user = UserModel.getAll().find((u) => u.id === userId);
+    if (!user) {
+      return { error: "User not found" }; // or simply return false
+    }
+    const product = ProductModel.get(parseInt(productId)); //because productId is coming as string from query parameters, so we need to parse it to integer before comparing with product id which is an integer.
+    if (!product) {
+      return { error: "Product not found" };
+    }
+
+    if(rating < 1 || rating > 5){
+        return false; // Invalid rating
+    }
+
+    //2. check if there are ratings for the product, if not then initialize it with an empty array.
+    if (!product.ratings) {
+      product.ratings = [];
+      product.ratings.push({ userId: userId, rating: parseInt(rating) });
+    } else {
+      //3. modifying the existenting rating for a particular user
+      const existingRatingIndex = product.ratings.findIndex(
+        (r) => r.userId === userId,
+      );
+      if (existingRatingIndex >= 0) {
+        product.ratings[existingRatingIndex] = {
+          userId: userId,
+          rating: parseInt(rating),
+        };
+      } else {
+        //4. adding new rating for the product.
+        product.ratings.push({ userId: userId, rating: parseInt(rating) });
+      }
+    }
+    // return success result so controller can inspect result object
+    return { success: true, product };
   }
 }
 
