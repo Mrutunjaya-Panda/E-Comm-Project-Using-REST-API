@@ -10,6 +10,7 @@ const jwtAuth = (req, res, next) => {
     try{
         const payload = jwt.verify(token, "g4NaMBkTIcNEq9HhPbNy5QfdRZ7hYmfmja5E9GOk5bc=");
         console.log(payload); // This will print the payload of the token, which is {id: user.id, email: user.email} in this case, which we have set while generating the token in the signIn method of UserController.
+        req.userId = payload.id; // we can set the userId in the request object, which can be used in the route handler to identify the user and perform user specific operations.
        
     } catch (error) {
         return res.status(401).send("Invalid token");
