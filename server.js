@@ -51,6 +51,12 @@ server.get("/", (req, res) => {
   res.send("Welcome to E-commerce APIs");
 });
 
+//At the end if non of the routes matched we will use this middleware to handle the 404 error.
+//It should be kept at the end.
+server.use((req,res) => {
+    res.status(404).send("API not found. Please check the API documentation for the correct endpoints and request format at http://localhost:3200/api-docs.");
+})
+
 //starting the server
 server.listen(3200, () => {
   console.log("Server is running on port 3200");
