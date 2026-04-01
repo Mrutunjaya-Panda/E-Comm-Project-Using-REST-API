@@ -1,0 +1,70 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "description": "API for E-commerce application",
+    "title": "E-Commerce API"
+  },
+  "host": "localhost:3200",
+  "securityDefinitions":{
+    "JWT":{
+        "in":"header",
+        "name":"Authorization",
+        "type":"apiKey"
+    }
+  },
+  "paths": {
+    "/api/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get Products",
+        "description": "User will get all products",
+        "security": [
+            {"JWT":{}}
+        ],
+        "responses":{
+            "200":{
+                "description": "OK"
+            },
+            "401":{
+                "description": "Unauthorized"
+            }
+        }
+      }
+    },
+
+    "/api/users/signin": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Sign in a user/login",
+        "description": "User login API, which will return a JWT token if the user is authenticated successfully, and this token can be used for accessing protected routes like adding items to cart, rating products, etc.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User Credentials",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses":{
+            "200":{
+                "description": "OK"
+            },
+            "400":{
+                "description": "Incorrect Credentials"
+            }
+        }
+      }
+    }
+  }
+}
