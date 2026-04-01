@@ -16,6 +16,20 @@ import basicAuth from "./src/middlewares/basicAuth.middleware.js";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
 const server = express();
 
+//CORS policy configuration manually:- for specific allowance of frontend application running at http://localhost:5500, we can also use cors package of npm to handle CORS policy in a better way, but here we are handling it manually by setting the headers in the response object.
+server.use((req,res,next)=>{
+    //res.header("Access-Control-Allow-Origin","*"); //if you want to allow access to your API from any/all origin(or web clients), you can set the Access-Control-Allow-Origin header to *, but it is not recommended for production environment as it can lead to security issues, so we will set it to specific origin which is our frontend application running at http://localhost:5500.
+    //I am applying this to response object & not request because this is something that server needs to specify.
+    res.header("Access-Control-Allow-Origin","http://localhost:5500");
+    res.header("Access-Control-Allow-Headers","*"); //this will allow all headers in the actual request, we can also specify the allowed headers instead of using *, but for now we will allow all headers.
+    res.header("Access-Control-Allow-Methods","*"); //this will allow all methods in the actual request, we can also specify the allowed methods instead of using *, but for now we will allow all methods.
+    //return ok for preflight request. Preflight request is an OPTIONS request sent by the browser before sending the actual request, to check if the actual request is safe to send or not, and to check what are the allowed methods and headers for the actual request. So we need to handle the preflight request and return ok for it, otherwise the actual request will not be sent by the browser.
+    if(req.method === "OPTIONS"){
+        return res.sendStatus(200);
+    }
+    next();
+})
+
 const jsonParser = bodyParser.json();
 //to parse the body of the request in JSON format for POST requests, we need to use body-parser middleware of express.
 server.use(jsonParser);
