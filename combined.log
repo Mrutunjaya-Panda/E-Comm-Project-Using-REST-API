@@ -1,0 +1,2 @@
+{"level":"info","message":{"body":{"email":"customer@ecom.com","password":"Password1"},"method":"POST","timestamp":"2026-04-02T20:57:36.164Z","url":"/api/users/signin"},"service":"user-service","timestamp":"2026-04-02T20:57:36.174Z"}
+{"level":"info","message":"Request Method: POST, Request URL: /api/users/signin","service":"user-service","timestamp":"2026-04-02T20:59:48.006Z"}
