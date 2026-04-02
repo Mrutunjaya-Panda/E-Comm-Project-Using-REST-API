@@ -15,6 +15,7 @@ import userRouter from "./src/features/user/user.routes.js";
 import cartRouter from "./src/features/cart/cart.routes.js";
 import basicAuth from "./src/middlewares/basicAuth.middleware.js";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
+import loggerMiddleware from "./src/middlewares/logger.middleware.js";
 const server = express();
 
 //CORS policy configuration using cors third party package.
@@ -51,6 +52,9 @@ server.use(jsonParser);
 import fs from "fs";
 const apiDocs = JSON.parse(fs.readFileSync(new URL("./swagger.json", import.meta.url), "utf8"));
 server.use("/api-docs", swagger.serve, swagger.setup(apiDocs));
+
+//we can also create our own custom logger middleware to log the details of incoming requests to the server, such as the request method, request URL, and the time of the request, which can be useful for debugging and monitoring purposes.
+server.use(loggerMiddleware);//applying for the application level, you can also apply it for specific routes if needed, but for now we will apply it for the entire application to log all incoming requests to the server.
 
 //Routes
 //server.get('/products', ProductController.getAllProducts);//but this type of routing
