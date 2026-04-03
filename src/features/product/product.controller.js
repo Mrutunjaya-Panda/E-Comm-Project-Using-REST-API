@@ -29,12 +29,20 @@ export default class ProductController{
         const userId = (req.query.userId);
         const productId = (req.query.productId);
         const rating = (req.query.rating);
-        const result = ProductModel.rateProduct(userId, productId, rating);
-        if(result.error){
-            res.status(400).send({message: result.error});
-        }else{
-            res.status(200).send({message: "Product rated successfully"});
+        //const result = ProductModel.rateProduct(userId, productId, rating);
+        try{
+            ProductModel.rateProduct(userId, productId, rating);
+        }catch(err){
+            res.status(400).send({message: err.message});//check Error class(Go to definition) to see why we used .message here.
+            return;
         }
+
+        return res.status(200).send({message: "Product rated successfully"});
+        // if(result.error){
+        //     res.status(400).send({message: result.error});
+        // }else{
+        //     res.status(200).send({message: "Product rated successfully"});
+        // }
     }
 
     getOneProduct(req,res){

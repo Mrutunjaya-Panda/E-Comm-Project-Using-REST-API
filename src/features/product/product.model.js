@@ -46,11 +46,15 @@ export default class ProductModel {
     //1. Validate user and product existence.
     const user = UserModel.getAll().find((u) => u.id === userId);
     if (!user) {
-      return { error: "User not found" }; // or simply return false
+      //better way to handle error using Try catch block and throwing error from model and catching it in controller.
+      throw new Error("User not found"); // or simply
+      //return { error: "User not found" }; // or simply return false
     }
     const product = ProductModel.get(parseInt(productId)); //because productId is coming as string from query parameters, so we need to parse it to integer before comparing with product id which is an integer.
     if (!product) {
-      return { error: "Product not found" };
+      //user-defined error.
+      throw new Error("Product not found"); // or simply
+      //return { error: "Product not found" };
     }
 
     if(rating < 1 || rating > 5){
