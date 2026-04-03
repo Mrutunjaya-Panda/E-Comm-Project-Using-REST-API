@@ -1,8 +1,0 @@
-{"level":"info","message":{"body":{"email":"customer@ecom.com","password":"Password1"},"method":"POST","timestamp":"2026-04-02T20:57:36.164Z","url":"/api/users/signin"},"service":"user-service","timestamp":"2026-04-02T20:57:36.174Z"}
-{"level":"info","message":"Request Method: POST, Request URL: /api/users/signin","service":"user-service","timestamp":"2026-04-02T20:59:48.006Z"}
-{"level":"info","message":"Request Method: POST, Request URL: /api/users/signin","service":"user-service","timestamp":"2026-04-03T15:22:33.304Z"}
-{"level":"info","message":{"method":"POST","timestamp":"2026-04-03T15:23:07.689Z","url":"/api/products/rate?userId=5&productId=1&rating=4"},"service":"user-service","timestamp":"2026-04-03T15:23:07.689Z"}
-{"level":"info","message":{"method":"POST","timestamp":"2026-04-03T15:23:40.997Z","url":"/api/products/rate?userId=2&productId=1&rating=4"},"service":"user-service","timestamp":"2026-04-03T15:23:40.997Z"}
-{"level":"info","message":"Request Method: POST, Request URL: /api/users/signin","service":"user-service","timestamp":"2026-04-03T15:31:26.211Z"}
-{"level":"info","message":{"method":"POST","timestamp":"2026-04-03T15:31:42.126Z","url":"/api/products/rate?userId=2&productId=4&rating=4"},"service":"user-service","timestamp":"2026-04-03T15:31:42.126Z"}
-{"level":"info","message":{"method":"POST","timestamp":"2026-04-03T15:31:50.520Z","url":"/api/products/rate?userId=2&productId=3&rating=4"},"service":"user-service","timestamp":"2026-04-03T15:31:50.520Z"}

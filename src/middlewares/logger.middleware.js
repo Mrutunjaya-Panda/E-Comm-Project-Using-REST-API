@@ -6,7 +6,7 @@
 import fs from "fs";
 import winston from "winston";
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
     level: 'info',//here level represents the level of log messages that will be logged in the log file, we can set it to different levels like error, warn, info, verbose, debug, silly, etc. but for now we will set it to info level to log all the log messages with info level and above (error and warn) in the log file.
     //format: winston.format.json(),//here format represents the format in which the log data will be stored in the log file, we can also use other formats like simple, prettyPrint, etc. but for now we will use json format to store the log data in the log file in a structured format which can be easily parsed and analyzed later.
     format: winston.format.combine(

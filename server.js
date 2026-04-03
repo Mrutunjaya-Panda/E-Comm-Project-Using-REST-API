@@ -26,18 +26,7 @@ var corOptions = {
 
 //server.use(cors());//bydefault it will allow all origins & headers, but we can also specify the allowed origins by passing an options object to the cors middleware.
 server.use(cors(corOptions));
-// server.use((req,res,next)=>{
-//     //res.header("Access-Control-Allow-Origin","*"); //if you want to allow access to your API from any/all origin(or web clients), you can set the Access-Control-Allow-Origin header to *, but it is not recommended for production environment as it can lead to security issues, so we will set it to specific origin which is our frontend application running at http://localhost:5500.
-//     //I am applying this to response object & not request because this is something that server needs to specify.
-//     res.header("Access-Control-Allow-Origin","http://localhost:5500");
-//     res.header("Access-Control-Allow-Headers","*"); //this will allow all headers in the actual request, we can also specify the allowed headers instead of using *, but for now we will allow all headers.
-//     res.header("Access-Control-Allow-Methods","*"); //this will allow all methods in the actual request, we can also specify the allowed methods instead of using *, but for now we will allow all methods.
-//     //return ok for preflight request. Preflight request is an OPTIONS request sent by the browser before sending the actual request, to check if the actual request is safe to send or not, and to check what are the allowed methods and headers for the actual request. So we need to handle the preflight request and return ok for it, otherwise the actual request will not be sent by the browser.
-//     if(req.method === "OPTIONS"){
-//         return res.sendStatus(200);
-//     }
-//     next();
-// })
+
 
 const jsonParser = bodyParser.json();
 //to parse the body of the request in JSON format for POST requests, we need to use body-parser middleware of express.
@@ -75,6 +64,20 @@ server.use("/api/users", userRouter);
 //default request handler
 server.get("/", (req, res) => {
   res.send("Welcome to E-commerce APIs");
+});
+
+//import { log } from "./src/middlewares/logger.middleware.js";//but we are using winston logger in our logger middleware, so we don't need to import the log function here, we can directly use the logger instance from our logger middleware to log the error details in the log file, let's see.
+//Application level error handling middleware, it will catch all the errors thrown from the controllers and send a proper response to the client, we can also log the error details in the log file using our logger middleware.
+import { logger } from "./src/middlewares/logger.middleware.js";//importing the logger instance from our logger middleware to log the error details in the log file.
+server.use((err, req, res, next)=>{
+  //we can import the logger instance from our logger middleware and log the error details in the log file.
+  //not only message but also we can log the stack trace of the error to get more details about the error and where it occurred in the code, which can be helpful for debugging purposes.
+  logger.error(err.message);
+  logger.error(err.stack);
+
+  //here 4 objects in the parameters of the middleware function represents that this is an error handling middleware, and it will be executed only when there is an error thrown from the controllers, otherwise it will be skipped.
+  console.log(err);
+  res.status(503).send({message: "Internal Server Error, Please try again later."});
 });
 
 //At the end if non of the routes matched we will use this middleware to handle the 404 error.

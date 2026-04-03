@@ -28,7 +28,7 @@ export default class ProductController{
         //we can receive from either request body or query parameters
         const userId = (req.query.userId);
         const productId = (req.query.productId);
-        const rating = (req.query.rating);
+        const rating = (req.querys.rating);
         //const result = ProductModel.rateProduct(userId, productId, rating);
         try{
             ProductModel.rateProduct(userId, productId, rating);
