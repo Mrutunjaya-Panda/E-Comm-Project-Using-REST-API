@@ -69,15 +69,24 @@ server.get("/", (req, res) => {
 //import { log } from "./src/middlewares/logger.middleware.js";//but we are using winston logger in our logger middleware, so we don't need to import the log function here, we can directly use the logger instance from our logger middleware to log the error details in the log file, let's see.
 //Application level error handling middleware, it will catch all the errors thrown from the controllers and send a proper response to the client, we can also log the error details in the log file using our logger middleware.
 import { logger } from "./src/middlewares/logger.middleware.js";//importing the logger instance from our logger middleware to log the error details in the log file.
+import { ApplicatonError } from "./src/error-handler/applicationError.js";//importing the custom error class to throw custom errors from our models and catch them in our controllers and then send a proper response to the client based on the type of error, let's see how to do that. We can also log the error details in the log file using our logger middleware, let's see how to do that as well.
 server.use((err, req, res, next)=>{
   //we can import the logger instance from our logger middleware and log the error details in the log file.
   //not only message but also we can log the stack trace of the error to get more details about the error and where it occurred in the code, which can be helpful for debugging purposes.
-  logger.error(err.message);
-  logger.error(err.stack);
-
+  // logger.error(err.message);
+  // logger.error(err.stack);
+  
   //here 4 objects in the parameters of the middleware function represents that this is an error handling middleware, and it will be executed only when there is an error thrown from the controllers, otherwise it will be skipped.
   console.log(err);
-  res.status(503).send({message: "Internal Server Error, Please try again later."});
+  if(err instanceof ApplicatonError){
+    return res.status(err.code).send({message: err.message});
+  }
+
+  //logging only the internal server errors in the log file, as these are the errors which we need to investigate and fix in our code, but for other types of errors like validation errors, not found errors, etc. we can simply send a proper response to the client without logging them in the log file, as these are the errors which are expected to occur in the normal flow of the application and we can handle them properly by sending a proper response to the client based on the type of error.
+  logger.error(err.message);
+  logger.error(err.stack);
+  //server error
+  res.status(500).send({message: "Internal Server Error, Please try again later."});
 });
 
 //At the end if non of the routes matched we will use this middleware to handle the 404 error.

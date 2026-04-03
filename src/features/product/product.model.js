@@ -1,3 +1,4 @@
+import { ApplicatonError } from "../../error-handler/applicationError.js";
 import UserModel from "../user/user.model.js";
 
 export default class ProductModel {
@@ -42,18 +43,19 @@ export default class ProductModel {
     return result;
   }
 
+  
   static rateProduct(userId, productId, rating) {
     //1. Validate user and product existence.
     const user = UserModel.getAll().find((u) => u.id === userId);
     if (!user) {
       //better way to handle error using Try catch block and throwing error from model and catching it in controller.
-      throw new Error("User not found"); // or simply
+      throw new ApplicatonError("User not found", 404); // or simply
       //return { error: "User not found" }; // or simply return false
     }
     const product = ProductModel.get(parseInt(productId)); //because productId is coming as string from query parameters, so we need to parse it to integer before comparing with product id which is an integer.
     if (!product) {
       //user-defined error.
-      throw new Error("Product not found"); // or simply
+      throw new ApplicatonError("Product not found", 404); // or simply
       //return { error: "Product not found" };
     }
 
