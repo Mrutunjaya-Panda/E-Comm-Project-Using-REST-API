@@ -16,6 +16,7 @@ import cartRouter from "./src/features/cart/cart.routes.js";
 import basicAuth from "./src/middlewares/basicAuth.middleware.js";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import loggerMiddleware from "./src/middlewares/logger.middleware.js";
+import { invalidRoutesHandlerMiddleware } from "./src/middlewares/invalidRoutes.middleware.js";
 const server = express();
 
 //CORS policy configuration using cors third party package.
@@ -91,9 +92,11 @@ server.use((err, req, res, next)=>{
 
 //At the end if non of the routes matched we will use this middleware to handle the 404 error.
 //It should be kept at the end.
-server.use((req,res) => {
-    res.status(404).send("API not found. Please check the API documentation for the correct endpoints and request format at http://localhost:3200/api-docs.");
-})
+server.use(invalidRoutesHandlerMiddleware);
+//instead of using below code to handle 404 error, we have created a separate middleware for it in the src/middlewares/invalidRoutes.middleware.js file and then we are using that middleware in our server.js file, which is a better way to handle it as it keeps our server.js file clean and organized, and also it follows the SRP principle as we are separating the concerns of handling invalid routes and handling errors in different middlewares, let's see how to do that in our server.js file.
+// server.use((req,res) => {
+//     res.status(404).send("API not found. Please check the API documentation for the correct endpoints and request format at http://localhost:3200/api-docs.");
+// })
 
 //starting the server
 server.listen(3200, () => {
