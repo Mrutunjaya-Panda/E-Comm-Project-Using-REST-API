@@ -52,7 +52,8 @@ export default class ProductController {
       ProductModel.rateProduct(userId, productId, rating);
     } catch (err) {
       console.log("passing to next error handling middleware");
-      next(err); //when we call next function with an error object, it will skip all the remaining middlewares and route handlers and will directly go to the error handling middleware, which we have defined in our server.js file, and it will handle the error and send a proper response to the client based on the type of error, let's see how to do that in our server.js file. We can also log the error details in the log file using our logger middleware in our server.js file, let's see how to do that as well.
+      next(err); //when we call next function with an error object, it will skip all the remaining middlewares and route handlers and will directly go to the error handling middleware, which we have defined in our server.js file, and it will handle the error and send a proper response to the client based on the type of error, let's see how to do that in our server.js file. 
+      // We can also log the error details in the log file using our logger middleware in our server.js file, let's see how to do that as well.
       return;
     }
 
