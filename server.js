@@ -31,7 +31,7 @@ server.use(cors(corOptions));
 
 const jsonParser = bodyParser.json();
 //to parse the body of the request in JSON format for POST requests, we need to use body-parser middleware of express.
-server.use(jsonParser);
+server.use(jsonParser); //also we can use server.use(express.json()) / server.use(express.urlencoded()) instead of using body-parser middleware, as express has built-in support for parsing JSON and URL-encoded request bodies, but for now we will use body-parser middleware to parse the JSON request bodies, let's see how to do that in our server.js file.
 
 //accesing swagger documentation at localhost:3200/api-docs
 // import swaggerUi from 'swagger-ui-express';
