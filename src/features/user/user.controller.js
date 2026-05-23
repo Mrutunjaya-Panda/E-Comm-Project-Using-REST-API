@@ -1,10 +1,16 @@
 import UserModel from "./user.model.js";
 import jwt from "jsonwebtoken";
 export default class UserController{
-    signUp(req, res){
-        const {name, email, password, type} = req.body;
-        const newUser = UserModel.SignUp(name, email, password, type);
-        res.status(201).send(newUser);
+    //since it returns a promise, we need to use async/await to handle the promise, or we can also use then and catch to handle the promise, but for now we will use async/await to handle the promise.
+    //embed this in a try/catch block as any async operation can throw an error, and we need to handle that error properly to avoid crashing the server and to send proper error response to the client.
+    async signUp(req, res){
+        try{
+            const {name, email, password, type} = req.body;
+            const newUser = await UserModel.SignUp(name, email, password, type);
+            res.status(201).send(newUser);
+        } catch(err){
+            res.status(500).send("Error occurred while signing up the user. Please try again later.");
+        }
     }
 
     //after successful login, we will generate a JWT token and send it to the client, which will be used for authentication and authorization for protected routes.

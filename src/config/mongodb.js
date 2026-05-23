@@ -9,18 +9,23 @@ import { MongoClient } from "mongodb";
 
 const url = 'mongodb://localhost:27017/ecomdb';
 
-const connectToMongoDB = () => {
-    // //1. create a new mongodb client
-    // const client = new MongoClient(url);
-    // //2. connect to the mongodb database
-
+let client;
+export const connectToMongoDB = () => {
     //it is a promise based method, so we can use then and catch to handle the promise, or we can also use async/await to handle the promise, but for now we will use then and catch to handle the promise.
-    MongoClient.connect(url).then(client => {
+    MongoClient.connect(url).then(clientInstance => {
+        client = clientInstance;//we have received the client instance of the mongodb database, now we can perform operations on the database using this client instance.
         console.log("Connected to MongoDB database successfully");
-        //we have received client instance og mongodb database, now we can perform operations on the database using this client instance.
+        //we have received client instance of mongodb database, now we can perform operations on the database using this client instance.
     }).catch(err => {
         console.error("Error connecting to MongoDB database:", err);
     });
 }
 
-export default connectToMongoDB;
+export const getDB = () =>{
+    if(!client){
+        throw new Error("MongoDB client is not initialized. Please call connectToMongoDB() first to initialize the client.");
+    }
+    return client.db(); // Return the database instance
+}
+
+//export default connectToMongoDB;

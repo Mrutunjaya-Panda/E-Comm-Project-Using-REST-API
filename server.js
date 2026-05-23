@@ -99,7 +99,7 @@ server.use(invalidRoutesHandlerMiddleware);
 // })
 
 //starting the server
-import connectToMongoDB from "./src/config/mongodb.js";
+import {connectToMongoDB} from "./src/config/mongodb.js";
 server.listen(3200, () => {
   console.log("Server is running on port 3200");
   connectToMongoDB();
