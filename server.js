@@ -1,9 +1,15 @@
+import "./env.js";//loading the environment variables from the .env file, so that we can access them throughout the application using process.env.VARIABLE_NAME, we have defined the DB_URL variable in the .env file to store the url of the mongodb database, and JWT_SECRET variable to store the secret key for signing the JWT tokens, 
+// so we can access them using process.env.DB_URL and process.env.JWT_SECRET in our code, 
+// this way we can keep our sensitive information secure and not hardcode it in our code, 
+// which is a good practice for security reasons, let's see how to do that in our server.js file.
+
 //here we will create our server using express.
 //here we have used swagger v2.0.
 import swagger from "swagger-ui-express";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
+
 //import ProductController from './src/features/product/product.controller';
 //import * as ProductRouter from './src/features/product/product.routes.js';
 
@@ -18,6 +24,8 @@ import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import loggerMiddleware from "./src/middlewares/logger.middleware.js";
 import { invalidRoutesHandlerMiddleware } from "./src/middlewares/invalidRoutes.middleware.js";
 const server = express();
+
+
 
 //CORS policy configuration using cors third party package.
 var corOptions = {
