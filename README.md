@@ -60,12 +60,38 @@ mongodb://127.0.0.1:27017/ecomDB
 
 ---
 
+## 📌 Current Implementation
+
+- Database operations are currently implemented directly inside:
+```text
+user.model.js
+```
+
+- Suitable for small-scale learning and understanding database connectivity.
+
+---
+
+## 🔮 Future Scaling (Next Branch)
+
+For better scalability and cleaner architecture:
+- A separate **Repository Layer / Repository Module** will be introduced in the next branch.
+- Database operations will be shifted from models to dedicated repository files.
+
+### ✅ Benefits of Repository Pattern
+- Better separation of concerns  
+- Cleaner and maintainable code  
+- Easier testing and scalability  
+- Improved large-scale application structure  
+
+---
+
 ## 📌 What This Branch Demonstrates
 
 - Local MongoDB server setup  
 - Connecting backend with database  
 - Using npm database packages  
-- Preparing the API for persistent data storage  
+- Basic database operations in model layer  
+- Foundation for scalable backend architecture  
 
 ---
 
