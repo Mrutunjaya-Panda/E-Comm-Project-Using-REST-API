@@ -1,27 +1,45 @@
 import ProductModel from "./product.model.js";
+import ProductRepository from "./product.repository.js";
 export default class ProductController {
-  //for now we are going to handle these 4 APIs in this product controller.
-  getAllProducts(req, res) {
-    const products = ProductModel.GetAll();
-    //we are not rendering as we did in MVC rather we are sending the data as JSON response,
-    //which will be consumed by the frontend application i.e multiple frontend applications can consume this API.
-    res.status(200).send(products);
+  constructor(){
+    this.productRepository = new ProductRepository();//as soon as we create an instance of the ProductController class, it will create an instance of the ProductRepository class and assign it to the productRepository property of the ProductController class,
+    //  so that we can use this productRepository property to call the methods of the ProductRepository class in our ProductController class to perform database operations related to products, and then we can return the response to the client from the controller based on the result of the database operations performed by the repository, let's see how to do that in our product.controller.js file.
   }
 
-  addProduct(req, res) {
+  //for now we are going to handle these 4 APIs in this product controller.
+  async getAllProducts(req, res) {
+    try{
+     const products = await this.productRepository.getAll();
+    //we are not rendering as we did in MVC rather we are sending the data as JSON response,
+    //which will be consumed by the frontend application i.e multiple frontend applications can consume this API.
+     res.status(200).send(products);
+    }catch(err){
+      console.log("Error occurred while getting all products:", err);
+      res.status(400).send({message: err.message});
+    }
+  }
+
+  async addProduct(req, res) {
     // console.log(req.body);//will give undefined if we will not parse the body of the rquest by using body-parser middleware of express.
     // console.log("This is a Post request");
     // res.status(200).send("Post request received");
-
-    const { name, price, sizes } = req.body;
-    const newProduct = {
+    try{
+      const { name, price, sizes } = req.body;
+      const newProduct = {
       name: name,
+      desc: null,
       price: parseFloat(price),
-      sizes: sizes.split(",").map((size) => size.trim()), // Convert comma-separated string to an array of sizes
       imageUrl: req.file ? req.file.filename : null, // Assuming you are using multer for file uploads
-    };
-    const addedProduct = ProductModel.add(newProduct);
-    res.status(201).send(addedProduct);
+      category: null,
+      sizes: sizes.split(",").map((size) => size.trim()), // Convert comma-separated string to an array of sizes
+      };
+      //const addedProduct = ProductModel.add(newProduct);
+      const addedProduct = await this.productRepository.add(newProduct);
+      res.status(201).send(addedProduct);
+    }catch(err){
+      res.status(400).send({message: err.message});
+    }
+    
   }
 
   // rateProduct(req,res){
@@ -60,15 +78,20 @@ export default class ProductController {
     return res.status(200).send({ message: "Product rated successfully" });
   }
 
-  getOneProduct(req, res) {
+  async getOneProduct(req, res) {
+    try{
     //using id of product.
     const id = parseInt(req.params.id);
-    const product = ProductModel.get(id);
+    //const product = ProductModel.get(id);
+    const product = await this.productRepository.get(id);
     if (!product) {
       res.status(404).send({ message: "Product not found" });
     } else {
       res.status(200).send(product);
     }
+   }catch(err){
+    res.status(400).send({message: err.message});
+   }
   }
 
   //to acieve filtering we will use query parameters,

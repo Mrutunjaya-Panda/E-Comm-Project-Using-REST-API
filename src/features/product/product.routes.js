@@ -14,12 +14,14 @@ const productController = new ProductController();
 router.post("/rate", productController.rateProduct);
 
 //3. Define routes and thier handlers.
-router.get("/", productController.getAllProducts);
+// router.get("/", productController.getAllProducts);
+router.get("/", (req,res) => {productController.getAllProducts(req,res)});
 
 //adding a new product with file upload using multer(fileupload) middleware.
 router.post("/",
     upload.single('imageUrl'), // Assuming the file field in the form is named 'imageUrl'
-     productController.addProduct
+    //  productController.addProduct
+    (req,res) =>{productController.addProduct(req,res)}
 );
 
 // //to get a single product by id.
@@ -29,7 +31,8 @@ router.post("/",
 router.get("/filter", productController.filterProducts);
 
 //to get a single product by id.
-router.get("/:id", productController.getOneProduct);
+//similarly
+router.get("/:id", (req,res) => {productController.getOneProduct(req,res)});
 
 //4. Export the router.
 export default router;
