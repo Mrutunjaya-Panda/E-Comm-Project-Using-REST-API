@@ -11,6 +11,12 @@ export default class UserController{
     async signUp(req, res){
         try{
             const {name, email, password, type} = req.body;
+            //if user already exists with the same email, then we will reject the signup attempt of the user, because email should be unique for each user in our application, so we will check if there is already a user with the same email in the database, if yes then we will reject the signup attempt of the user, otherwise we will allow the user to signup to the application.
+            const existingUser = await this.userRepository.findByemail(email);
+            if(existingUser){
+                res.status(400).send("User already exists with the same email. Please use a different email to signup.");
+                return;
+            }
             //const newUser = await UserModel.SignUp(name, email, password, type);
 
             //hash the password before storing it in the database, so that even if someone gets access to the database, they will not be able to see the actual password of the user, instead they will see the hashed password, which is not useful for them, because hashing is a one way function, which means that we cannot get the original password from the hashed password, 
