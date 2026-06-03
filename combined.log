@@ -1,2 +1,0 @@
-{"level":"info","message":{"method":"POST","timestamp":"2026-05-30T06:59:30.773Z","url":"/api/products/rate?productId=6a166b285b0b985d2faf4e1c&rating=4.4"},"service":"user-service","timestamp":"2026-05-30T06:59:30.785Z"}
-{"level":"info","message":{"method":"POST","timestamp":"2026-05-30T06:59:45.106Z","url":"/api/products/rate?productId=6a166b285b0b985d2faf4e1c&rating=4.3"},"service":"user-service","timestamp":"2026-05-30T06:59:45.106Z"}
