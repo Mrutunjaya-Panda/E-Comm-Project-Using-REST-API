@@ -1,0 +1,5 @@
+//steps to modify _ids into generic ones like 1,2,3,etc, to be specific we will first do it for cartItems database.
+ i.e for easier human readeability & understanding.
+
+ 1. Counter collection i.e Counter collection(_id:"cartItemId",value:0)  will be created to keep track of the current count for each collection.
+2. while adding cartItems, increment the value of cartItemId in Counter collection by 1 and use that value as the _id for the new cartItem document.

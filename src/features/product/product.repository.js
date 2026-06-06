@@ -58,7 +58,7 @@ class ProductRepository {
     }
   }
 
-  async filter(minPrice, maxPrice, category) {
+  async filter(minPrice, maxPrice, categories) {
     try {
       const db = getDB();
       const collection = db.collection(this.collection);
@@ -75,9 +75,23 @@ class ProductRepository {
           $lte: parseFloat(maxPrice),
         }; //we are using spread operator here to merge the existing filter expression for price with the new filter expression for maximum price, because we want to filter the products based on both minimum price and maximum price.
       }
-      if (category) {
-        filterExpression.category = category;
+      // if (category) {
+      //   filterExpression.category = category;
+      if(categories && categories.length > 0){
+        filterExpression.category = { $in: categories }; //we are using $in operator here to filter the products based on multiple categories, for example if the user wants to filter the products based on category 1 and category 2, then we can pass the categories as an array like this: ["category 1", "category 2"], and then we can use $in operator to filter the products based on these categories, let's see how to do that in our product.repository.js file.
       }
+      // }
+      //since we passed categories as an array, we will be using $in operator to filter the products based on multiple categories, for example if the user wants to filter the products based on category 1 and category 2, then we can pass the categories as an array like this: ["category 1", "category 2"], and then we can use $in operator to filter the products based on these categories, let's see how to do that in our product.repository.js file.
+
+      //we can you $and operator to combine multiple filter expressions together, for example if we want to filter the products based on minimum price and category together, then we can use $and operator to combine the filter expressions for minimum price and category together, let's see how to do that in our product.repository.js file.
+      // let filterExpression = {};
+      // if (minPrice && category) {
+      //   filterExpression = {
+      //     $and: [
+      //       { price: { $gte: parseFloat(minPrice) } },
+      //       { category: category }
+      //     ]
+      //   };
 
       const filteredProducts = await collection
         .find(filterExpression)

@@ -104,8 +104,10 @@ export default class ProductController {
     //retrieve the filter parameters from query parameters.
      const minPrice = parseFloat(req.query.minPrice);
      const maxPrice = parseFloat(req.query.maxPrice);
-     const category = req.query.category;
-     const filteredProducts = await this.productRepository.filter(minPrice, maxPrice, category);
+     let categories = req.query.categories; //don't use Split() because it will not be array.
+     //convert into array then pass.
+     categories = JSON.parse(categories.replace(/'/g, '"')); // Convert single quotes to double quotes for JSON parsing
+     const filteredProducts = await this.productRepository.filter(minPrice, maxPrice, categories);
      res.status(200).send(filteredProducts);
     }catch(err){
         console.log("Error occurred while filtering the products:", err); 
