@@ -39,6 +39,11 @@ router.get("/filter", (req, res) => {
   productController.filterProducts(req, res);
 });
 
+//averageprice
+router.get("/averagePrice", (req, res, next)=>{
+  productController.averagePrice(req,res,next);
+})
+
 //to get a single product by id.
 //similarly
 router.get("/:id", (req, res) => {

@@ -77,7 +77,7 @@ class ProductRepository {
       }
       // if (category) {
       //   filterExpression.category = category;
-      if(categories && categories.length > 0){
+      if (categories && categories.length > 0) {
         filterExpression.category = { $in: categories }; //we are using $in operator here to filter the products based on multiple categories, for example if the user wants to filter the products based on category 1 and category 2, then we can pass the categories as an array like this: ["category 1", "category 2"], and then we can use $in operator to filter the products based on these categories, let's see how to do that in our product.repository.js file.
       }
       // }
@@ -93,9 +93,18 @@ class ProductRepository {
       //     ]
       //   };
 
+      // const filteredProducts = await collection
+      //   .find(filterExpression)
+      //   .toArray();
+      //if you want to return specific fields of the product documents in the response, then you can use projection in the find method of the collection to specify the fields that you want to return in the response, for example if you want to return only the name and price fields of the product documents in the response, then you can use projection like this: { name: 1, price: 1 }, where 1 means that we want to include that field in the response, and 0 means that we want to exclude that field from the response, let's see how to do that in our product.repository.js file.
+      // const filteredProducts = await collection
+      //   .find(filterExpression, { projection: { name: 1, price: 1 } })
+      //   .toArray();
+      //or
       const filteredProducts = await collection
         .find(filterExpression)
-        .toArray();
+        .project({ name: 1, price: 1, ratings: { $slice: 1 } })
+        .toArray(); //slice will return only the first element of the ratings array for each product document in the response, this way we can return only the average rating for each product in the response, instead of returning all the ratings for each product in the response, which can be a lot of data if there are many ratings for each product, let's see how to do that in our product.repository.js file.
       return filteredProducts;
     } catch (err) {
       throw new ApplicationError("Failed to filter products", 500);
@@ -104,111 +113,157 @@ class ProductRepository {
 
   //now for rate
   //now I want ki for same userId the same rating field should change/update instead of creating a new object in the ratings array , let's see how to do that in our product.repository.js file.
-//   async rate(userId, productId, rating) {
-//     try {
-//       //it is a little bit different i.e we are going to add ratings to already existing product document in the database, so we will be using updateOne method of the collection to update the product document in the database by adding the new rating to the existing ratings array of the product document in the database, let's see how to do that in our product.repository.js file.
-//       const db = getDB();
-//       const collection = db.collection(this.collection);
-//       //1. Validate user and product existence.
-//       const userCollection = db.collection("users");
-//       const user = await userCollection.findOne({ _id: new ObjectId(userId) });
-//       if (!user) {
-//         //better way to handle error using Try catch block and throwing error from model and catching it in controller.
-//         throw new ApplicationError("User not found", 404); // or simply
-//         //return { error: "User not found" }; // or simply return false
-//       }
-//       const product = await collection.findOne({
-//         _id: new ObjectId(productId),
-//       });
-//       if (!product) {
-//         //user-defined error.
-//         throw new ApplicationError("Product not found", 404); // or simply
-//         //return { error: "Product not found" };
-//       }
-//       //now rating
-//       if (rating < 1 || rating > 5) {
-//         throw new ApplicationError(
-//           "Invalid rating value. Rating should be between 1 and 5.",
-//           400,
-//         );
-//       }
-//       //2. check if there are ratings for the product, if not then initialize it with an empty array.
-//       if (!product.ratings) {
-//         product.ratings = [];
-//       }
-//       const userObjectId = new ObjectId(userId);
-//       // Check if the user has already rated the product
-//       const existingRatingIndex = product.ratings.findIndex(
-//         (r) => String(r.userId) === String(userObjectId),
-//       );
-//       if (existingRatingIndex !== -1) {
-//         // Update existing rating
-//         product.ratings[existingRatingIndex].userId = userObjectId; // Ensure the userId is stored as ObjectId in the ratings array
-//         product.ratings[existingRatingIndex].rating = parseFloat(rating);
-//       } else {
-//         // Add new rating
-//         product.ratings.push({
-//           userId: userObjectId,
-//           rating: parseFloat(rating),
-//         });
-//       }
-//       await collection.updateOne(
-//         {
-//           _id: new ObjectId(productId),
-//         },
-//         { $set: { ratings: product.ratings } },
-//       ); //we are using $set operator here to update the ratings array of the product document in the database, because we want to keep all the ratings given by different users for the same product in the database, so we will be using an array to store the ratings for each product in the database,
-//       // and whenever a new rating is added for a product, we will simply push that new rating to the existing ratings array of that product document in the database using $push operator of mongodb.
-//     } catch (err) {
-//       console.log("Error occurred while rating the product:", err);
-//       if (err instanceof ApplicationError) {
-//         throw err;
-//       }
-//       throw new ApplicationError("Failed to rate product", 500);
-//     }
-//   }
+  //   async rate(userId, productId, rating) {
+  //     try {
+  //       //it is a little bit different i.e we are going to add ratings to already existing product document in the database, so we will be using updateOne method of the collection to update the product document in the database by adding the new rating to the existing ratings array of the product document in the database, let's see how to do that in our product.repository.js file.
+  //       const db = getDB();
+  //       const collection = db.collection(this.collection);
+  //       //1. Validate user and product existence.
+  //       const userCollection = db.collection("users");
+  //       const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+  //       if (!user) {
+  //         //better way to handle error using Try catch block and throwing error from model and catching it in controller.
+  //         throw new ApplicationError("User not found", 404); // or simply
+  //         //return { error: "User not found" }; // or simply return false
+  //       }
+  //       const product = await collection.findOne({
+  //         _id: new ObjectId(productId),
+  //       });
+  //       if (!product) {
+  //         //user-defined error.
+  //         throw new ApplicationError("Product not found", 404); // or simply
+  //         //return { error: "Product not found" };
+  //       }
+  //       //now rating
+  //       if (rating < 1 || rating > 5) {
+  //         throw new ApplicationError(
+  //           "Invalid rating value. Rating should be between 1 and 5.",
+  //           400,
+  //         );
+  //       }
+  //       //2. check if there are ratings for the product, if not then initialize it with an empty array.
+  //       if (!product.ratings) {
+  //         product.ratings = [];
+  //       }
+  //       const userObjectId = new ObjectId(userId);
+  //       // Check if the user has already rated the product
+  //       const existingRatingIndex = product.ratings.findIndex(
+  //         (r) => String(r.userId) === String(userObjectId),
+  //       );
+  //       if (existingRatingIndex !== -1) {
+  //         // Update existing rating
+  //         product.ratings[existingRatingIndex].userId = userObjectId; // Ensure the userId is stored as ObjectId in the ratings array
+  //         product.ratings[existingRatingIndex].rating = parseFloat(rating);
+  //       } else {
+  //         // Add new rating
+  //         product.ratings.push({
+  //           userId: userObjectId,
+  //           rating: parseFloat(rating),
+  //         });
+  //       }
+  //       await collection.updateOne(
+  //         {
+  //           _id: new ObjectId(productId),
+  //         },
+  //         { $set: { ratings: product.ratings } },
+  //       ); //we are using $set operator here to update the ratings array of the product document in the database, because we want to keep all the ratings given by different users for the same product in the database, so we will be using an array to store the ratings for each product in the database,
+  //       // and whenever a new rating is added for a product, we will simply push that new rating to the existing ratings array of that product document in the database using $push operator of mongodb.
+  //     } catch (err) {
+  //       console.log("Error occurred while rating the product:", err);
+  //       if (err instanceof ApplicationError) {
+  //         throw err;
+  //       }
+  //       throw new ApplicationError("Failed to rate product", 500);
+  //     }
+  //   }
 
-//the below also reduces the risk of race conditions, because we are performing the pull and push operations in two separate updateOne calls, which ensures that even if there are multiple concurrent requests to rate the same product by the same user,
-// we will not end up with duplicate ratings for the same user in the ratings array of the product document in the database, because the pull operation will remove any existing rating of the user for the product before adding the new rating to the ratings array of the product document in the database using push operation, let's see how to do that in our product.repository.js file.
-//another more easy & user friendly way using pull to remove existing rating of the user for the product and then push the new rating to the ratings array of the product document in the database, let's see how to do that in our product.repository.js file.
-async rate(userId, productId, rating) {
-  try{
-    const db = getDB();
-    const collection = db.collection(this.collection);
-    //validity checks, else we will add users or products which do not exist in the database, which is not good for data integrity of the database, so we will be doing these validity checks before adding the rating to the product document in the database, let's see how to do that in our product.repository.js file.
-    const userCollection = db.collection("users");
-    const user = await userCollection.findOne({ _id: new ObjectId(userId) });
-    if (!user) {
-      throw new ApplicationError("User not found", 404);
+  //the below also reduces the risk of race conditions, because we are performing the pull and push operations in two separate updateOne calls, which ensures that even if there are multiple concurrent requests to rate the same product by the same user,
+  // we will not end up with duplicate ratings for the same user in the ratings array of the product document in the database, because the pull operation will remove any existing rating of the user for the product before adding the new rating to the ratings array of the product document in the database using push operation, let's see how to do that in our product.repository.js file.
+  //another more easy & user friendly way using pull to remove existing rating of the user for the product and then push the new rating to the ratings array of the product document in the database, let's see how to do that in our product.repository.js file.
+  async rate(userId, productId, rating) {
+    try {
+      const db = getDB();
+      const collection = db.collection(this.collection);
+      //validity checks, else we will add users or products which do not exist in the database, which is not good for data integrity of the database, so we will be doing these validity checks before adding the rating to the product document in the database, let's see how to do that in our product.repository.js file.
+      const userCollection = db.collection("users");
+      const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+      if (!user) {
+        throw new ApplicationError("User not found", 404);
+      }
+      const product = await collection.findOne({
+        _id: new ObjectId(productId),
+      });
+      if (!product) {
+        throw new ApplicationError("Product not found", 404);
+      }
+      if (rating < 1 || rating > 5) {
+        throw new ApplicationError(
+          "Invalid rating value. Rating should be between 1 and 5.",
+          400,
+        );
+      }
+      // 1. removes existing rating of the user for the product
+      await collection.updateOne(
+        { _id: new ObjectId(productId) },
+        { $pull: { ratings: { userId: new ObjectId(userId) } } }, //we are using $pull operator here to remove the existing rating of the user for the product from the ratings array of the product document in the database, because we want to update the existing rating of the user for the product with the new rating, so we will be using $pull operator to remove the existing rating of the user for the product from the ratings array of the product document in the database, and then we will be using $push operator to add the new rating to the ratings array of the product document in the database, let's see how to do that in our product.repository.js file.
+      );
+      // 2. adds new rating to the ratings array of the product document in the database
+      await collection.updateOne(
+        { _id: new ObjectId(productId) },
+        {
+          $push: {
+            ratings: {
+              userId: new ObjectId(userId),
+              rating: parseFloat(rating),
+            },
+          },
+        }, //we are using $push operator here to add the new rating to the ratings array of the product document in the database, because we want to keep all the ratings given by different users for the same product in the database, so we will be using an array to store the ratings for each product in the database, and whenever a new rating is added for a product, we will simply push that new rating to the existing ratings array of that product document in the database using $push operator of mongodb.
+      );
+    } catch (err) {
+      console.log("Error occurred while rating the product:", err);
+      // if(err instanceof ApplicationError){
+      //     throw err;
+      // }
+      throw new ApplicationError("Failed to rate product", 500);
     }
-    const product = await collection.findOne({ _id: new ObjectId(productId) });
-    if (!product) {
-      throw new ApplicationError("Product not found", 404);
-    }
-    if (rating < 1 || rating > 5) {
+  }
+
+  async averageProductPriceByCategory() {
+    try {
+      const db = getDB();
+      const collection = db.collection(this.collection);
+      // const result = await collection
+      //   .aggregate([
+      //     { $match: { category: category } },
+      //     { $group: { _id: null, averagePrice: { $avg: "$price" } } },
+      //   ])
+      //   .toArray();
+      // return result.length > 0 ? result[0].averagePrice : null;
+      const result = await collection
+        .aggregate([
+          {
+            //Stage 1: Get average price per category
+            $group: {
+              _id: "$category", //will group all the products based on specified category.
+              averagePrice: { $avg: "$price" },
+            },
+          },
+        ])
+        .toArray();
+      //no need to prvide category parameter in the request query parameters for this averageProductPriceByCategory method, because we are grouping all the products based on their category and calculating the average price for each category, so we will get the average price for each category in the response, and the response will be an array of objects, where each object will contain the category name as _id and the average price for that category as averagePrice.
+
+      return result;
+    } catch (err) {
+      console.log(
+        "Error occurred while calculating the average price of products of a specific category:",
+        err,
+      );
       throw new ApplicationError(
-        "Invalid rating value. Rating should be between 1 and 5.",
-        400
+        "Failed to calculate average price of products for the category",
+        500,
       );
     }
-    // 1. removes existing rating of the user for the product
-    await collection.updateOne(
-      {_id: new ObjectId(productId)},
-      {$pull: {ratings: {userId: new ObjectId(userId)}}} //we are using $pull operator here to remove the existing rating of the user for the product from the ratings array of the product document in the database, because we want to update the existing rating of the user for the product with the new rating, so we will be using $pull operator to remove the existing rating of the user for the product from the ratings array of the product document in the database, and then we will be using $push operator to add the new rating to the ratings array of the product document in the database, let's see how to do that in our product.repository.js file.
-    );
-    // 2. adds new rating to the ratings array of the product document in the database
-    await collection.updateOne(
-      {_id: new ObjectId(productId)},
-      {$push: {ratings: {userId: new ObjectId(userId), rating: parseFloat(rating)}}} //we are using $push operator here to add the new rating to the ratings array of the product document in the database, because we want to keep all the ratings given by different users for the same product in the database, so we will be using an array to store the ratings for each product in the database, and whenever a new rating is added for a product, we will simply push that new rating to the existing ratings array of that product document in the database using $push operator of mongodb.
-    );
-  }catch(err){
-    console.log("Error occurred while rating the product:", err);
-    // if(err instanceof ApplicationError){
-    //     throw err;
-    // }
-    throw new ApplicationError("Failed to rate product", 500);
   }
- }
 }
 
 export default ProductRepository;

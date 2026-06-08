@@ -114,4 +114,17 @@ export default class ProductController {
         res.status(400).send({message: err.message});
     }
   }
+
+  //let's now see how we can use aggregate function of mongodb to find out the average price of products of a specific category.
+  async averagePrice(req,res,next){
+    try{
+      const result = await this.productRepository.averageProductPriceByCategory();
+      res.status(200).send(result);
+    }catch(err){
+        console.log("Error occurred while calculating the average price of products of a specific category:", err);
+        res.status(400).send({message: err.message});
+        return;//do not actually need to return here because we are sending the response to the client in the above line, but we can also return here to explicitly indicate that we are done with the execution of this function and we are not going to execute any further code in this function, which can be helpful for readability and understanding of the code, especially for other developers who may be reading our code in the future, so it is a good practice to return after sending the response to the client in a controller method, to clearly indicate that we are done with the execution of that method and we are not going to execute any further code in that method.
+        //next(err);
+    }
+  }
 }
