@@ -28,6 +28,12 @@ export const connectToMongoDB = () => {
     });
 };
 
+//The getclient is required for Transaction operations, as we need to start a session for the transaction operations, and for that we need the client instance of the mongodb database, so we will export the getClient function to get the client instance of the mongodb database,
+//  which we can use in our repository classes to perform transaction operations on the database.
+export const getClient = () => {
+    return client;
+}
+
 export const getDB = () => {
   if (!client) {
     throw new Error(
@@ -70,3 +76,9 @@ const createIndexes = async (db) => {
 };
 
 //export default connectToMongoDB;
+
+// Text index on desc
+// For desc: "text", MongoDB breaks text into words and stores a mapping like:
+// "laptop" -> document 1, document 4
+// "wireless" -> document 2, document 5
+// So searching for laptop finds all documents containing that word quickly.

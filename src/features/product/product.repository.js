@@ -250,7 +250,8 @@ class ProductRepository {
           },
         ])
         .toArray();
-      //no need to prvide category parameter in the request query parameters for this averageProductPriceByCategory method, because we are grouping all the products based on their category and calculating the average price for each category, so we will get the average price for each category in the response, and the response will be an array of objects, where each object will contain the category name as _id and the average price for that category as averagePrice.
+      //no need to prvide category parameter in the request query parameters for this averageProductPriceByCategory method, because we are grouping all the products based on their category and calculating the average price for each category, so we will get the average price for each category in the response, and the response will be an array of objects, 
+      // where each object will contain the category name as _id and the average price for that category as averagePrice.
 
       return result;
     } catch (err) {

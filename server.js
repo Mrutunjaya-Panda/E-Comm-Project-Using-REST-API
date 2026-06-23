@@ -19,6 +19,7 @@ import ProductRouter from "./src/features/product/product.routes.js";
 
 import userRouter from "./src/features/user/user.routes.js";
 import cartRouter from "./src/features/cart/cart.routes.js";
+import orderRouter from "./src/features/order/order.routes.js";
 import basicAuth from "./src/middlewares/basicAuth.middleware.js";
 import jwtAuth from "./src/middlewares/jwt.middleware.js";
 import loggerMiddleware from "./src/middlewares/logger.middleware.js";
@@ -68,6 +69,9 @@ server.use("/api/products", jwtAuth, ProductRouter);
 
 server.use("/api/cartItems", jwtAuth, cartRouter);
 server.use("/api/users", userRouter);
+
+//for orders
+server.use("/api/orders", jwtAuth, orderRouter);
 
 //default request handler
 server.get("/", (req, res) => {
