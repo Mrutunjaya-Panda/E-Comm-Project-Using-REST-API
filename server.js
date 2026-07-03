@@ -9,7 +9,7 @@ import swagger from "swagger-ui-express";
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
-
+import mongoose from "mongoose";
 //import ProductController from './src/features/product/product.controller';
 //import * as ProductRouter from './src/features/product/product.routes.js';
 
@@ -90,6 +90,9 @@ server.use((err, req, res, next) => {
 
   //here 4 objects in the parameters of the middleware function represents that this is an error handling middleware, and it will be executed only when there is an error thrown from the controllers, otherwise it will be skipped.
   console.log(err);
+  if(err instanceof mongoose.Error.ValidationError){
+    return res.status(400).send({ message: err.message });
+  }
   if (err instanceof ApplicationError) {
     return res.status(err.code).send({ message: err.message });
   }
@@ -112,8 +115,9 @@ server.use(invalidRoutesHandlerMiddleware);
 // })
 
 //starting the server
-import { connectToMongoDB } from "./src/config/mongodb.js";
+//mport { connectToMongoDB } from "./src/config/mongodb.js";
+import { connectUsingMongoose } from "./src/config/mongooseConfig.js";
 server.listen(3200, () => {
   console.log("Server is running on port 3200");
-  connectToMongoDB();
+  connectUsingMongoose();
 });

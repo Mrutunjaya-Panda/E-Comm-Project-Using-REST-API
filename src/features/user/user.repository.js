@@ -1,42 +1,33 @@
-//to overcome the issue of SRP violation, we will create a separate module for handling all the database operations related to user,
-// which will be responsible for interacting with the database and performing CRUD operations on the user collection in the database, and
-// then we will use this module in our user controller to handle the business logic related to user authentication and authorization, and
-// then we will use this controller in our user routes to handle the incoming requests related to user authentication and authorization.
-
-import { getDB } from "../../config/mongodb.js";
+import mongoose from "mongoose";
+import { userSchema } from "./user.schema.js";
 import { ApplicationError } from "../../error-handler/applicationError.js";
-class UserRepository {
-  async SignUp(newUser) {
+//compile model from schema
+const UserModel = mongoose.model("User", userSchema);
+
+export default class UserRepository {
+  async SignUp(user) {
     try {
-      //1. get the database instance
-      const db = getDB();
-
-      //2. get the collection
-      const collection = db.collection("users"); // even though we have not created the collection in the database, but mongodb will automatically create the collection when we insert the first document in it.
-
-      //3. insert the new user document in the collection
-      await collection.insertOne(newUser);
+      const newUser = new UserModel(user);
+      await newUser.save(); //save() is like inserOne() in mongodb.
       return newUser;
     } catch (err) {
       //console.error("Error occurred while signing up the user:", err);
-      throw new ApplicationError(
-        "Error occurred while signing up the user. Please try again later.",
-        500,
-      );
+
+      if (err instanceof mongoose.Error.ValidationError) {
+        throw err; //will be caught in the controller and sfixed there or send to the next error handling middleware in the server.js file, which will send a proper response to the client based on the type of error, let's see how to do that.
+        //throw new ApplicationError("Validation error: " + err.message, 400);
+      } else {
+        throw new ApplicationError(
+          "Error occurred while signing up the user. Please try again later.",
+          500,
+        );
+      }
     }
   }
-  //replace signIn with findByemail, because we will use this method to find the user document in the collection based on email, and then we will compare the password entered by the user with the hashed password stored in the database using bcrypt's compare method in our user controller, and if both are same then only we will allow the user to login to the application, otherwise we will reject the login attempt of the user.
-  async findByemail(email) {
+
+  async SignIn(email, password) {
     try {
-      //1. get the database instance
-      const db = getDB();
-
-      //2. get the collection
-      const collection = db.collection("users"); // even though we have not created the collection in the database, but mongodb will automatically create the collection when we insert the first document in it.
-
-      //3. find the user document in the collection based on email and password
-      const user = await collection.findOne({ email: email });
-      return user;
+      return UserModel.findOne({ email: email, password: password });
     } catch (err) {
       //console.error("Error occurred while signing in the user:", err);
       throw new ApplicationError(
@@ -45,22 +36,34 @@ class UserRepository {
       );
     }
   }
-  // async SignIn(email, password){
-  //         try{
-  //             //1. get the database instance
-  //            const db = getDB();
 
-  //             //2. get the collection
-  //             const collection = db.collection("users"); // even though we have not created the collection in the database, but mongodb will automatically create the collection when we insert the first document in it.
+  async findByemail(email) {
+    try {
+      return UserModel.findOne({ email: email });
+    } catch (err) {
+      //console.error("Error occurred while signing in the user:", err);
+      throw new ApplicationError(
+        "Error occurred while signing in the user. Please try again later.",
+        500,
+      );
+    }
+  }
 
-  //             //3. find the user document in the collection based on email and password
-  //             const user = await collection.findOne({email: email, password: password});
-  //             return user;
-  //         }catch(err){
-  //             //console.error("Error occurred while signing in the user:", err);
-  //             throw new ApplicationError("Error occurred while signing in the user. Please try again later.", 500);
-  //         }
-  // }
+  async resetPassword(userId, newPassword) {
+    try {
+      const user = await UserModel.findById(userId);
+      if (!user) {
+        throw new ApplicationError("User not found", 404);
+      }
+      user.password = newPassword;
+      await user.save(); //if new insert else update, save() will handle both cases.
+      return user;
+    } catch (err) {
+      throw new ApplicationError(
+        "Error occurred while resetting password",
+        500,
+      );
+    }
+  }
 }
-
-export default UserRepository;
+//3 methods we have migrated using mongoose library.

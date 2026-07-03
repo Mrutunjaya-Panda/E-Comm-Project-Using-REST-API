@@ -24,14 +24,17 @@ export default class ProductController {
     // console.log("This is a Post request");
     // res.status(200).send("Post request received");
     try {
-      const { name, price, sizes, category } = req.body;//let's take category too.
+      //add categories instead of just category.
+      const { name, price, description, sizes, categories } = req.body; //let's take categories too.
       const newProduct = {
         name: name,
-        desc: null,
+        description: description ? description : "", //if description is not provided, then we will set it to an empty string, so that we don't get undefined value in the database for description field, which can cause issues while querying the products collection in the database, so we will set it to an empty string if description is not provided in the request body.
         price: parseFloat(price),
         imageUrl: req.file ? req.file.filename : null, // Assuming you are using multer for file uploads
-        category: category || null,
-        sizes: sizes.split(",").map((size) => size.trim()), // Convert comma-separated string to an array of sizes
+        categories: categories
+          ? categories.split(",").map((cat) => cat.trim())
+          : [],
+        sizes: sizes ? sizes.split(",").map((size) => size.trim()) : [], // Convert comma-separated string to an array of sizes
       };
       //const addedProduct = ProductModel.add(newProduct);
       const addedProduct = await this.productRepository.add(newProduct);
@@ -63,7 +66,7 @@ export default class ProductController {
     //we can receive from either request body or query parameters
     try {
       //const userId = req.query.userId;
-      const userId = req.userId;//we can get the userId from the request object, which is set by the jwtAuth middleware after verifying the token, so we can use that userId to identify the user who is rating the product and perform user specific operations in the repository.
+      const userId = req.userId; //we can get the userId from the request object, which is set by the jwtAuth middleware after verifying the token, so we can use that userId to identify the user who is rating the product and perform user specific operations in the repository.
       const productId = req.query.productId;
       const rating = req.query.rating;
 
@@ -100,31 +103,39 @@ export default class ProductController {
   //for eg:- user may want to filter based on min price and max price, not category, so we will use query parameters for filtering.
 
   async filterProducts(req, res) {
-    try{
-    //retrieve the filter parameters from query parameters.
-     const minPrice = parseFloat(req.query.minPrice);
-     const maxPrice = parseFloat(req.query.maxPrice);
-     let categories = req.query.categories; //don't use Split() because it will not be array.
-     //convert into array then pass.
-     categories = JSON.parse(categories.replace(/'/g, '"')); // Convert single quotes to double quotes for JSON parsing
-     const filteredProducts = await this.productRepository.filter(minPrice, maxPrice, categories);
-     res.status(200).send(filteredProducts);
-    }catch(err){
-        console.log("Error occurred while filtering the products:", err); 
-        res.status(400).send({message: err.message});
+    try {
+      //retrieve the filter parameters from query parameters.
+      const minPrice = parseFloat(req.query.minPrice);
+      const maxPrice = parseFloat(req.query.maxPrice);
+      let categories = req.query.categories; //don't use Split() because it will not be array.
+      //convert into array then pass.
+      categories = JSON.parse(categories.replace(/'/g, '"')); // Convert single quotes to double quotes for JSON parsing
+      const filteredProducts = await this.productRepository.filter(
+        minPrice,
+        maxPrice,
+        categories,
+      );
+      res.status(200).send(filteredProducts);
+    } catch (err) {
+      console.log("Error occurred while filtering the products:", err);
+      res.status(400).send({ message: err.message });
     }
   }
 
   //let's now see how we can use aggregate function of mongodb to find out the average price of products of a specific category.
-  async averagePrice(req,res,next){
-    try{
-      const result = await this.productRepository.averageProductPriceByCategory();
+  async averagePrice(req, res, next) {
+    try {
+      const result =
+        await this.productRepository.averageProductPriceByCategory();
       res.status(200).send(result);
-    }catch(err){
-        console.log("Error occurred while calculating the average price of products of a specific category:", err);
-        res.status(400).send({message: err.message});
-        return;//do not actually need to return here because we are sending the response to the client in the above line, but we can also return here to explicitly indicate that we are done with the execution of this function and we are not going to execute any further code in this function, which can be helpful for readability and understanding of the code, especially for other developers who may be reading our code in the future, so it is a good practice to return after sending the response to the client in a controller method, to clearly indicate that we are done with the execution of that method and we are not going to execute any further code in that method.
-        //next(err);
+    } catch (err) {
+      console.log(
+        "Error occurred while calculating the average price of products of a specific category:",
+        err,
+      );
+      res.status(400).send({ message: err.message });
+      return; //do not actually need to return here because we are sending the response to the client in the above line, but we can also return here to explicitly indicate that we are done with the execution of this function and we are not going to execute any further code in this function, which can be helpful for readability and understanding of the code, especially for other developers who may be reading our code in the future, so it is a good practice to return after sending the response to the client in a controller method, to clearly indicate that we are done with the execution of that method and we are not going to execute any further code in that method.
+      //next(err);
     }
   }
 }
