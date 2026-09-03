@@ -1,14 +1,44 @@
 {
   "openapi": "3.0.0",
   "info": {
+    "title": "E-Commerce REST API",
     "version": "1.0.0",
-    "description": "API for E-commerce application",
-    "title": "E-Commerce API"
+    "description": "A fully featured E-Commerce backend REST API built with Node.js, Express and MongoDB. Features include JWT Authentication, Product Management, Cart, Orders and Likes.",
+    "contact": {
+      "name": "Mrutunjaya Panda",
+      "url": "https://github.com/Mrutunjaya-Panda"
+    }
   },
   "servers": [
     {
       "url": "http://localhost:3200",
-      "description": "Local server"
+      "description": "Local Development Server"
+    },
+    {
+      "url": "https://e-comm-project-using-rest-api.onrender.com",
+      "description": "Production Server (Render)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Products",
+      "description": "Manage products, categories and reviews"
+    },
+    {
+      "name": "Users",
+      "description": "Authentication and user management"
+    },
+    {
+      "name": "Cart",
+      "description": "Shopping cart operations"
+    },
+    {
+      "name": "Orders",
+      "description": "Order placement and tracking"
+    },
+    {
+      "name": "Likes",
+      "description": "Like and unlike products"
     }
   ],
   "components": {
@@ -16,7 +46,215 @@
       "JWT": {
         "in": "header",
         "name": "Authorization",
-        "type": "apiKey"
+        "type": "apiKey",
+        "description": "Enter your JWT token directly (without 'Bearer' prefix). Obtain a token from POST /api/users/signin."
+      }
+    },
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9a123"
+          },
+          "name": {
+            "type": "string",
+            "example": "Wireless Headphones"
+          },
+          "description": {
+            "type": "string",
+            "example": "Premium noise-cancelling over-ear wireless headphones."
+          },
+          "price": {
+            "type": "number",
+            "format": "float",
+            "example": 2999.99
+          },
+          "inStock": {
+            "type": "integer",
+            "example": 50
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "1691234567890-headphones.jpg"
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            }
+          },
+          "reviews": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Review"
+            }
+          }
+        }
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9b456"
+          },
+          "name": {
+            "type": "string",
+            "example": "Electronics"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["64b1f4c2e4b0f5a3d8e9a123"]
+          }
+        }
+      },
+      "Review": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9c789"
+          },
+          "productId": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9a123"
+          },
+          "userId": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9d000"
+          },
+          "rating": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 5,
+            "example": 4
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9d000"
+          },
+          "name": {
+            "type": "string",
+            "example": "Mrutunjaya Panda"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "mrutunjaya@example.com"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["customer", "seller"],
+            "example": "customer"
+          }
+        }
+      },
+      "CartItem": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9e111"
+          },
+          "productId": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9a123"
+          },
+          "userId": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9d000"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "example": 2
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9f222"
+          },
+          "userId": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9d000"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CartItem"
+            }
+          },
+          "totalAmount": {
+            "type": "number",
+            "format": "float",
+            "example": 5999.98
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "processing", "shipped", "delivered", "cancelled"],
+            "example": "pending"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-08-30T06:17:00.000Z"
+          }
+        }
+      },
+      "Like": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9g333"
+          },
+          "user": {
+            "type": "string",
+            "example": "64b1f4c2e4b0f5a3d8e9d000"
+          },
+          "likeable": {
+            "type": "string",
+            "description": "ObjectId of the liked Product or Category",
+            "example": "64b1f4c2e4b0f5a3d8e9a123"
+          },
+          "types": {
+            "type": "string",
+            "enum": ["Product", "Category"],
+            "example": "Product"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "An error occurred."
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "Operation completed successfully."
+          }
+        }
       }
     }
   },
@@ -24,36 +262,559 @@
     "/api/products": {
       "get": {
         "tags": ["Products"],
-        "summary": "Get Products",
-        "description": "User will get all products",
-        "security": [{ "JWT": {} }],
+        "summary": "Get all products",
+        "description": "Retrieves a list of all products available in the store.",
+        "security": [{ "JWT": [] }],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "A list of all products returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Product" }
+                },
+                "example": [
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9a123",
+                    "name": "Wireless Headphones",
+                    "description": "Premium noise-cancelling over-ear wireless headphones.",
+                    "price": 2999.99,
+                    "inStock": 50,
+                    "imageUrl": "1691234567890-headphones.jpg",
+                    "categories": ["64b1f4c2e4b0f5a3d8e9b456"],
+                    "reviews": []
+                  },
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9a124",
+                    "name": "Running Shoes",
+                    "description": "Lightweight and breathable running shoes for all terrains.",
+                    "price": 1499.50,
+                    "inStock": 120,
+                    "imageUrl": "1691234567891-shoes.jpg",
+                    "categories": ["64b1f4c2e4b0f5a3d8e9b457"],
+                    "reviews": []
+                  }
+                ]
+              }
+            }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Products"],
+        "summary": "Add a new product",
+        "description": "Creates a new product with an optional image upload using multipart/form-data.",
+        "security": [{ "JWT": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "price"],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Name of the product",
+                    "example": "Wireless Headphones"
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "Detailed description of the product",
+                    "example": "Premium noise-cancelling over-ear wireless headphones."
+                  },
+                  "price": {
+                    "type": "number",
+                    "description": "Price of the product",
+                    "example": 2999.99
+                  },
+                  "categories": {
+                    "type": "string",
+                    "description": "Comma-separated list of category names",
+                    "example": "Electronics, Audio"
+                  },
+                  "sizes": {
+                    "type": "string",
+                    "description": "Comma-separated list of available sizes (if applicable)",
+                    "example": "S, M, L, XL"
+                  },
+                  "imageUrl": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Product image file to upload"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Product created successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" },
+                "example": {
+                  "_id": "64b1f4c2e4b0f5a3d8e9a123",
+                  "name": "Wireless Headphones",
+                  "description": "Premium noise-cancelling over-ear wireless headphones.",
+                  "price": 2999.99,
+                  "imageUrl": "1691234567890-headphones.jpg",
+                  "categories": [],
+                  "reviews": []
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation failed or missing required fields.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Product validation failed: name: Path `name` is required." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
           }
         }
       }
     },
-
-    "/api/users/signin": {
+    "/api/products/filter": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Filter products by price and category",
+        "description": "Filters products based on minimum price, maximum price, and/or categories.",
+        "security": [{ "JWT": [] }],
+        "parameters": [
+          {
+            "name": "minPrice",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number", "example": 500 },
+            "description": "Minimum price filter (inclusive)."
+          },
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "number", "example": 5000 },
+            "description": "Maximum price filter (inclusive)."
+          },
+          {
+            "name": "categories",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "example": "['Electronics', 'Audio']" },
+            "description": "JSON-like array string of category names (e.g., ['Electronics', 'Audio'])."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Filtered list of products returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Product" }
+                },
+                "example": [
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9a123",
+                    "name": "Wireless Headphones",
+                    "description": "Premium noise-cancelling over-ear wireless headphones.",
+                    "price": 2999.99,
+                    "inStock": 50,
+                    "imageUrl": "1691234567890-headphones.jpg",
+                    "categories": ["64b1f4c2e4b0f5a3d8e9b456"],
+                    "reviews": []
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid or missing query parameters.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Invalid filter parameters provided." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/averagePrice": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get average product price by category",
+        "description": "Returns the average price of products grouped by each category using MongoDB aggregation.",
+        "security": [{ "JWT": [] }],
+        "responses": {
+          "200": {
+            "description": "Average price per category returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "_id": {
+                        "type": "string",
+                        "description": "Category name or ObjectId"
+                      },
+                      "averagePrice": {
+                        "type": "number",
+                        "format": "float"
+                      }
+                    }
+                  }
+                },
+                "example": [
+                  { "_id": "Electronics", "averagePrice": 4250.75 },
+                  { "_id": "Footwear", "averagePrice": 1200.00 }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - error during aggregation.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Error while calculating average price." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/rate": {
+      "post": {
+        "tags": ["Products"],
+        "summary": "Rate a product",
+        "description": "Allows an authenticated user to submit a numeric rating for a specific product via query parameters.",
+        "security": [{ "JWT": [] }],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "example": "64b1f4c2e4b0f5a3d8e9a123" },
+            "description": "The MongoDB ObjectId of the product to be rated."
+          },
+          {
+            "name": "rating",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "number", "minimum": 1, "maximum": 5, "example": 4 },
+            "description": "Rating value between 1 and 5."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product rated successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" },
+                "example": { "message": "Product rated successfully" }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid productId or rating value.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Invalid productId or rating." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Product not found" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get a product by ID",
+        "description": "Retrieves the full details of a single product by its MongoDB ObjectId.",
+        "security": [{ "JWT": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "example": "64b1f4c2e4b0f5a3d8e9a123" },
+            "description": "The MongoDB ObjectId of the product."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product found and returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Product" },
+                "example": {
+                  "_id": "64b1f4c2e4b0f5a3d8e9a123",
+                  "name": "Wireless Headphones",
+                  "description": "Premium noise-cancelling over-ear wireless headphones.",
+                  "price": 2999.99,
+                  "inStock": 50,
+                  "imageUrl": "1691234567890-headphones.jpg",
+                  "categories": [
+                    {
+                      "_id": "64b1f4c2e4b0f5a3d8e9b456",
+                      "name": "Electronics",
+                      "products": ["64b1f4c2e4b0f5a3d8e9a123"]
+                    }
+                  ],
+                  "reviews": [
+                    {
+                      "_id": "64b1f4c2e4b0f5a3d8e9c789",
+                      "productId": "64b1f4c2e4b0f5a3d8e9a123",
+                      "userId": "64b1f4c2e4b0f5a3d8e9d000",
+                      "rating": 4
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - invalid ObjectId format.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Cast to ObjectId failed for value at path _id." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "404": {
+            "description": "Product not found.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Product not found" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/signup": {
       "post": {
         "tags": ["Users"],
-        "summary": "Sign in a user/login",
-        "description": "User login API, which will return a JWT token if the user is authenticated successfully, and this token can be used for accessing protected routes like adding items to cart, rating products, etc.",
+        "summary": "Register a new user",
+        "description": "Creates a new user account with name, email, password, and account type.",
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": ["name", "email", "password", "type"],
                 "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Mrutunjaya Panda"
+                  },
                   "email": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "email",
+                    "example": "mrutunjaya@example.com"
                   },
                   "password": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Min 8 characters with at least one uppercase, one lowercase, and one number.",
+                    "example": "SecurePass1"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["customer", "seller"],
+                    "example": "customer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/User" },
+                "example": {
+                  "_id": "64b1f4c2e4b0f5a3d8e9d000",
+                  "name": "Mrutunjaya Panda",
+                  "email": "mrutunjaya@example.com",
+                  "type": "customer"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - validation failed (e.g., weak password, invalid email, or duplicate email).",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "message": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/signin": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Sign in a user",
+        "description": "Authenticates a user with email and password and returns a JWT token for accessing protected routes.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email", "password"],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "mrutunjaya@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "SecurePass1"
                   }
                 }
               }
@@ -62,10 +823,586 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "User signed in successfully. JWT token is returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjFmNGMyZTRiMGY1YTNkOGU5ZDAwMCIsImVtYWlsIjoibXJ1dHVuamF5YUBleGFtcGxlLmNvbSIsImlhdCI6MTY5MTIzNDU2NywiZXhwIjoxNjkxMzIwOTY3fQ.abc123signature"
+                    }
+                  }
+                },
+                "example": {
+                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjFmNGMyZTRiMGY1YTNkOGU5ZDAwMCIsImVtYWlsIjoibXJ1dHVuamF5YUBleGFtcGxlLmNvbSIsImlhdCI6MTY5MTIzNDU2NywiZXhwIjoxNjkxMzIwOTY3fQ.abc123signature"
+                }
+              }
+            }
           },
           "400": {
-            "description": "Incorrect Credentials"
+            "description": "Bad request - incorrect email or password.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Incorrect credentials." }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/resetPassword": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Reset user password",
+        "description": "Allows an authenticated user to reset their account password to a new one.",
+        "security": [{ "JWT": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["newPassword"],
+                "properties": {
+                  "newPassword": {
+                    "type": "string",
+                    "description": "The new password. Must be at least 8 characters with one uppercase, one lowercase, and one number.",
+                    "example": "NewSecurePass2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" },
+                "example": { "message": "Password reset successfully." }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - new password does not meet validation requirements.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "message": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cartItems": {
+      "get": {
+        "tags": ["Cart"],
+        "summary": "Get cart items for the authenticated user",
+        "description": "Returns all cart items belonging to the currently authenticated user.",
+        "security": [{ "JWT": [] }],
+        "responses": {
+          "200": {
+            "description": "Cart items returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/CartItem" }
+                },
+                "example": [
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9e111",
+                    "productId": "64b1f4c2e4b0f5a3d8e9a123",
+                    "userId": "64b1f4c2e4b0f5a3d8e9d000",
+                    "quantity": 2
+                  },
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9e112",
+                    "productId": "64b1f4c2e4b0f5a3d8e9a124",
+                    "userId": "64b1f4c2e4b0f5a3d8e9d000",
+                    "quantity": 1
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cartItems/add": {
+      "post": {
+        "tags": ["Cart"],
+        "summary": "Add an item to the cart",
+        "description": "Adds a product to the authenticated user's shopping cart with a specified quantity.",
+        "security": [{ "JWT": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["productId", "quantity"],
+                "properties": {
+                  "productId": {
+                    "type": "string",
+                    "description": "The MongoDB ObjectId of the product to add.",
+                    "example": "64b1f4c2e4b0f5a3d8e9a123"
+                  },
+                  "quantity": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Number of units to add to the cart.",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Item added to cart successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/CartItem" },
+                "example": {
+                  "_id": "64b1f4c2e4b0f5a3d8e9e111",
+                  "productId": "64b1f4c2e4b0f5a3d8e9a123",
+                  "userId": "64b1f4c2e4b0f5a3d8e9d000",
+                  "quantity": 2
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing or invalid productId/quantity.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "cartItemSchema validation failed: quantity: Path `quantity` (0) is less than minimum allowed value (1)." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cartItems/{id}": {
+      "delete": {
+        "tags": ["Cart"],
+        "summary": "Delete a cart item",
+        "description": "Removes a specific cart item from the authenticated user's cart by its ObjectId.",
+        "security": [{ "JWT": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "example": "64b1f4c2e4b0f5a3d8e9e111" },
+            "description": "The MongoDB ObjectId of the cart item to remove."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart item deleted successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" },
+                "example": { "message": "Cart item deleted successfully." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "404": {
+            "description": "Cart item not found.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Cart item not found." }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Place an order",
+        "description": "Places a new order for the authenticated user, converting their cart items into a confirmed order.",
+        "security": [{ "JWT": [] }],
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "cartItemIds": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "description": "Optional list of specific cart item ObjectIds to order. If omitted, all cart items are ordered.",
+                    "example": [
+                      "64b1f4c2e4b0f5a3d8e9e111",
+                      "64b1f4c2e4b0f5a3d8e9e112"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order placed successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Order" },
+                "example": {
+                  "_id": "64b1f4c2e4b0f5a3d8e9f222",
+                  "userId": "64b1f4c2e4b0f5a3d8e9d000",
+                  "items": [
+                    {
+                      "_id": "64b1f4c2e4b0f5a3d8e9e111",
+                      "productId": "64b1f4c2e4b0f5a3d8e9a123",
+                      "userId": "64b1f4c2e4b0f5a3d8e9d000",
+                      "quantity": 2
+                    }
+                  ],
+                  "totalAmount": 5999.98,
+                  "status": "pending",
+                  "createdAt": "2024-08-30T06:17:00.000Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - cart is empty or invalid cart item IDs provided.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "No items in cart to place an order." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/likes": {
+      "post": {
+        "tags": ["Likes"],
+        "summary": "Like a product or category",
+        "description": "Allows an authenticated user to like a product or category by providing its ObjectId and entity type.",
+        "security": [{ "JWT": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["id", "type"],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "The MongoDB ObjectId of the product or category to like.",
+                    "example": "64b1f4c2e4b0f5a3d8e9a123"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": ["Product", "Category"],
+                    "description": "The type of the entity being liked.",
+                    "example": "Product"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Like recorded successfully.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Like" },
+                "example": {
+                  "_id": "64b1f4c2e4b0f5a3d8e9g333",
+                  "user": "64b1f4c2e4b0f5a3d8e9d000",
+                  "likeable": "64b1f4c2e4b0f5a3d8e9a123",
+                  "types": "Product"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing id/type or invalid type value.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "likeSchema validation failed: types: `InvalidType` is not a valid enum value for path `types`." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Likes"],
+        "summary": "Get likes for a product or category",
+        "description": "Returns all likes for a specific product or category identified by its ObjectId and type.",
+        "security": [{ "JWT": [] }],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string", "example": "64b1f4c2e4b0f5a3d8e9a123" },
+            "description": "The MongoDB ObjectId of the product or category."
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["Product", "Category"],
+              "example": "Product"
+            },
+            "description": "The type of the entity to retrieve likes for."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Likes for the specified entity returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Like" }
+                },
+                "example": [
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9g333",
+                    "user": "64b1f4c2e4b0f5a3d8e9d000",
+                    "likeable": "64b1f4c2e4b0f5a3d8e9a123",
+                    "types": "Product"
+                  },
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9g334",
+                    "user": "64b1f4c2e4b0f5a3d8e9d001",
+                    "likeable": "64b1f4c2e4b0f5a3d8e9a123",
+                    "types": "Product"
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing or invalid id/type query parameters.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "id and type query parameters are required." }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/likes/user": {
+      "get": {
+        "tags": ["Likes"],
+        "summary": "Get all likes by the authenticated user",
+        "description": "Returns all products and categories that the currently authenticated user has liked.",
+        "security": [{ "JWT": [] }],
+        "responses": {
+          "200": {
+            "description": "All likes for the authenticated user returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Like" }
+                },
+                "example": [
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9g333",
+                    "user": "64b1f4c2e4b0f5a3d8e9d000",
+                    "likeable": {
+                      "_id": "64b1f4c2e4b0f5a3d8e9a123",
+                      "name": "Wireless Headphones",
+                      "price": 2999.99
+                    },
+                    "types": "Product"
+                  },
+                  {
+                    "_id": "64b1f4c2e4b0f5a3d8e9g335",
+                    "user": "64b1f4c2e4b0f5a3d8e9d000",
+                    "likeable": {
+                      "_id": "64b1f4c2e4b0f5a3d8e9b456",
+                      "name": "Electronics"
+                    },
+                    "types": "Category"
+                  }
+                ]
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - JWT token is missing or invalid.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Token is missing/unauthorized" }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "message": "Internal Server Error, Please try again later." }
+              }
+            }
           }
         }
       }

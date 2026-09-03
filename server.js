@@ -29,7 +29,7 @@ const server = express();
 
 //CORS policy configuration using cors third party package.
 var corOptions = {
-  origin: "http://localhost:5500",
+  origin: process.env.CORS_ORIGIN || "http://localhost:5500",
   allowedHeaders: "*",
 };
 
@@ -77,9 +77,13 @@ server.use("/api/orders", jwtAuth, orderRouter);
 //for likes
 server.use("/api/likes", jwtAuth, likeRouter);
 
+// Serve static files from the 'public' directory
+import path from 'path';
+server.use(express.static(path.join(process.cwd(), 'public')));
+
 //default request handler
 server.get("/", (req, res) => {
-  res.send("Welcome to E-commerce APIs");
+  res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
 });
 
 //import { log } from "./src/middlewares/logger.middleware.js";//but we are using winston logger in our logger middleware, so we don't need to import the log function here, we can directly use the logger instance from our logger middleware to log the error details in the log file, let's see.
@@ -121,7 +125,7 @@ server.use(invalidRoutesHandlerMiddleware);
 //starting the server
 //mport { connectToMongoDB } from "./src/config/mongodb.js";
 import { connectUsingMongoose } from "./src/config/mongooseConfig.js";
-server.listen(3200, () => {
+server.listen(process.env.PORT || 3200, () => {
   console.log("Server is running on port 3200");
   connectUsingMongoose();
 });
