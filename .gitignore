@@ -4,3 +4,43 @@ combined.log
 *.log
 steps.txt
 src/features/order/info.txt
+
+# Dependencies
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+combined.log
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+.vscode/settings.json
+*.swp
+*.swo
+
+# Learning/reference files (kept locally, hidden from GitHub)
+steps.txt
+APIList.txt
+src/features/order/info.txt
+src/features/user/user.repository_old.js
+JS_ClientFor_CORS_Test/
+
+# GSD working files (Antigravity tool files)
+.gsd/JOURNAL.md
+.gsd/STATE.md
+
+# Build artifacts
+dist/
+build/
+
+# Temporary files
+*.tmp
+*.temp
