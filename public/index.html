@@ -225,6 +225,141 @@
     .link-item a:hover {
       text-decoration: underline;
     }
+
+    /* ===== Tech Stack — 3-col card grid ===== */
+    .tech-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .tech-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-top: 3px solid var(--accent);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      transition: all 0.25s ease;
+    }
+    .tech-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 12px 20px -8px rgba(16, 185, 129, 0.25);
+    }
+    .tech-card .tech-icon { font-size: 2rem; display: block; }
+    .tech-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0.6rem 0 0.35rem;
+    }
+    .tech-card p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* ===== Architecture Flow ===== */
+    .flow-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .flow-box2 {
+      background-color: var(--card-bg);
+      border: 2px solid var(--accent);
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      min-width: 140px;
+      text-align: center;
+    }
+    .flow-box2 .f-icon { font-size: 2rem; display: block; }
+    .flow-box2 .f-name {
+      font-weight: 700;
+      color: var(--text-main);
+      display: block;
+      margin-top: 0.35rem;
+    }
+    .flow-box2 .f-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 0.25rem;
+    }
+    .flow-arrow2 { color: var(--accent); font-size: 1.6rem; font-weight: bold; }
+    .flow-note {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    /* ===== Key Features — 3-col card grid ===== */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--accent);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      transition: all 0.25s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent), 0 12px 24px -10px rgba(16, 185, 129, 0.4);
+    }
+    .feature-card .f-icon { font-size: 2.2rem; display: block; }
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin: 0.6rem 0 0.35rem;
+    }
+    .feature-card p { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* ===== Future Implementations — roadmap ===== */
+    .roadmap {
+      background-color: #1a2744;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0.75rem;
+      padding: 0.5rem 1.75rem;
+    }
+    .roadmap-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.1rem 0;
+    }
+    .roadmap-item + .roadmap-item { border-top: 1px solid rgba(255, 255, 255, 0.08); }
+    .roadmap-badge {
+      background-color: #f59e0b;
+      color: #0f172a;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 9999px;
+      flex-shrink: 0;
+      margin-top: 0.3rem;
+    }
+    .roadmap-body .r-title { font-weight: 700; color: var(--text-main); }
+    .roadmap-body p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.15rem;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 900px) {
+      .tech-grid, .feature-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .tech-grid, .feature-grid { grid-template-columns: 1fr; }
+      .flow-arrow2 { transform: rotate(90deg); }
+    }
   </style>
 </head>
 <body>
@@ -241,18 +376,67 @@
 
     <section>
       <h2>Tech Stack</h2>
-      <div class="tech-stack">
-        <span class="tech-badge">Node.js</span>
-        <span class="tech-badge">Express.js</span>
-        <span class="tech-badge">MongoDB</span>
-        <span class="tech-badge">Mongoose</span>
-        <span class="tech-badge">JSON Web Token (JWT)</span>
-        <span class="tech-badge">Bcrypt</span>
-        <span class="tech-badge">Swagger UI</span>
-        <span class="tech-badge">Multer</span>
-        <span class="tech-badge">Winston Logger</span>
-        <span class="tech-badge">CORS</span>
-        <span class="tech-badge">Dotenv</span>
+      <div class="tech-grid">
+        <div class="tech-card">
+          <span class="tech-icon">⚡</span>
+          <h3>Node.js</h3>
+          <p>Async, non-blocking runtime powering the entire API.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🚀</span>
+          <h3>Express.js</h3>
+          <p>Minimal web framework for routing &amp; middleware chaining.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🍃</span>
+          <h3>MongoDB</h3>
+          <p>Flexible document store for products, users, orders &amp; likes.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🔗</span>
+          <h3>Mongoose</h3>
+          <p>ODM powering schemas, relationships &amp; polymorphic refs.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🔐</span>
+          <h3>JWT</h3>
+          <p>Stateless auth tokens verified on every protected route.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🔒</span>
+          <h3>Bcrypt</h3>
+          <p>Salts &amp; hashes passwords before they touch the database.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">📄</span>
+          <h3>Swagger UI</h3>
+          <p>Live OpenAPI 3.0 docs served at /api-docs.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">📁</span>
+          <h3>Multer</h3>
+          <p>Multipart file uploads for product images.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">📊</span>
+          <h3>Winston</h3>
+          <p>Structured JSON request &amp; error logging.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🛡️</span>
+          <h3>CORS</h3>
+          <p>Restricts cross-origin access to allowed clients.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🔧</span>
+          <h3>Dotenv</h3>
+          <p>Keeps DB_URL &amp; JWT_SECRET out of source control.</p>
+        </div>
+        <div class="tech-card">
+          <span class="tech-icon">🌿</span>
+          <h3>ES Modules</h3>
+          <p>Modern import/export with "type": "module".</p>
+        </div>
       </div>
     </section>
 
@@ -284,42 +468,240 @@
 
     <section>
       <h2>Architecture Flow</h2>
-      <div class="flow-box">
-        <span class="flow-step">Client Request</span><span class="flow-arrow">→</span>
-        <span class="flow-step">JWT Middleware</span><span class="flow-arrow">→</span>
-        <span class="flow-step">Route Handler</span><span class="flow-arrow">→</span>
-        <br/><br/>
-        <span class="flow-step">Controller</span><span class="flow-arrow">→</span>
-        <span class="flow-step">Repository</span><span class="flow-arrow">→</span>
-        <span class="flow-step">MongoDB</span>
+      <div class="flow-wrap">
+        <div class="flow-box2">
+          <span class="f-icon">📱</span>
+          <span class="f-name">Client Request</span>
+          <span class="f-desc">HTTP request</span>
+        </div>
+        <span class="flow-arrow2">→</span>
+        <div class="flow-box2">
+          <span class="f-icon">🛡️</span>
+          <span class="f-name">CORS</span>
+          <span class="f-desc">Origin allow-list</span>
+        </div>
+        <span class="flow-arrow2">→</span>
+        <div class="flow-box2">
+          <span class="f-icon">📦</span>
+          <span class="f-name">Body Parser</span>
+          <span class="f-desc">JSON parsing</span>
+        </div>
+        <span class="flow-arrow2">→</span>
+        <div class="flow-box2">
+          <span class="f-icon">📊</span>
+          <span class="f-name">Logger</span>
+          <span class="f-desc">Winston request log</span>
+        </div>
+        <span class="flow-arrow2">→</span>
+        <div class="flow-box2">
+          <span class="f-icon">🔐</span>
+          <span class="f-name">JWT Middleware</span>
+          <span class="f-desc">Token verification</span>
+        </div>
+        <span class="flow-arrow2">→</span>
+        <div class="flow-box2">
+          <span class="f-icon">🛣️</span>
+          <span class="f-name">Route Handler</span>
+          <span class="f-desc">Express router</span>
+        </div>
+        <span class="flow-arrow2">→</span>
+        <div class="flow-box2">
+          <span class="f-icon">🎮</span>
+          <span class="f-name">Controller</span>
+          <span class="f-desc">Business orchestration</span>
+        </div>
+        <span class="flow-arrow2">→</span>
+        <div class="flow-box2">
+          <span class="f-icon">🗄️</span>
+          <span class="f-name">Repository</span>
+          <span class="f-desc">Data-access layer</span>
+        </div>
+        <span class="flow-arrow2">→</span>
+        <div class="flow-box2">
+          <span class="f-icon">🍃</span>
+          <span class="f-name">MongoDB</span>
+          <span class="f-desc">Mongoose models</span>
+        </div>
       </div>
+      <p class="flow-note">⚠️ Errors thrown anywhere bubble up to a centralized error-handling middleware → JSON response.</p>
     </section>
 
     <section>
       <h2>Key Features</h2>
-      <ul class="feature-list">
-        <li>Feature-based modular architecture</li>
-        <li>JWT Authentication & Authorization</li>
-        <li>Global Error Handling with custom ApplicationError</li>
-        <li>Request logging with Winston</li>
-        <li>File upload support with Multer</li>
-        <li>Invalid route handling (404)</li>
-        <li>Swagger/OpenAPI 3.0 Documentation</li>
-        <li>CORS configured</li>
-      </ul>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <span class="f-icon">⚡</span>
+          <h3>Modular Architecture</h3>
+          <p>Feature-first folders — product, user, cart, order, like.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">🔐</span>
+          <h3>JWT Authentication</h3>
+          <p>Stateless Bearer tokens, payload injected into req.userId.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">🔒</span>
+          <h3>Bcrypt Hashing</h3>
+          <p>Passwords salted &amp; hashed — never stored in plaintext.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">🏗️</span>
+          <h3>Repository Pattern</h3>
+          <p>Data access decoupled from controllers in every feature.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">🚨</span>
+          <h3>Global Error Handling</h3>
+          <p>Custom ApplicationError + centralized error middleware.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">📊</span>
+          <h3>Winston Logger</h3>
+          <p>Structured JSON logs; credentials redacted on auth routes.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">📁</span>
+          <h3>File Upload</h3>
+          <p>Multer with sanitized, timestamped filenames.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">🛡️</span>
+          <h3>CORS Configured</h3>
+          <p>Origin-restricted cross-origin policy via options object.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">🔀</span>
+          <h3>Invalid Route Handler</h3>
+          <p>Uniform 404 JSON responses for unknown paths.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">📄</span>
+          <h3>Swagger OpenAPI 3.0</h3>
+          <p>Interactive, self-documenting API at /api-docs.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">🌿</span>
+          <h3>ES Modules</h3>
+          <p>Native import/export — modern module system.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">✅</span>
+          <h3>Schema Validation</h3>
+          <p>Email regex, password strength, enums &amp; min constraints.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">❤️</span>
+          <h3>Polymorphic Likes</h3>
+          <p>refPath references Product &amp; Category in one schema.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">🧬</span>
+          <h3>Mongoose Middleware</h3>
+          <p>pre/post save &amp; find hooks for auditability.</p>
+        </div>
+        <div class="feature-card">
+          <span class="f-icon">💾</span>
+          <h3>DB Relationships</h3>
+          <p>1:N reviews, M:N categories, and transactional orders.</p>
+        </div>
+      </div>
     </section>
 
     <section>
       <h2>Future Implementations</h2>
-      <ul class="feature-list">
-        <li>Payment gateway integration (Razorpay/Stripe)</li>
-        <li>Redis caching for product listings</li>
-        <li>Email notifications (NodeMailer)</li>
-        <li>Rate limiting & request throttling</li>
-        <li>Admin dashboard</li>
-        <li>Product search & filters</li>
-        <li>Wishlist feature</li>
-      </ul>
+      <div class="roadmap">
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">🔄 Refresh Token Mechanism</span>
+            <p>Reissue access tokens securely without forcing re-login.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">💳 Payment Integration</span>
+            <p>Razorpay / Stripe checkout for real order placement.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">⚡ Redis Caching</span>
+            <p>Cache hot product reads to cut DB latency.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">🔍 Search &amp; Filters</span>
+            <p>Full-text search and advanced query composition.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">📄 Pagination</span>
+            <p>Scale list endpoints with consistent page/limit contracts.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">📧 Email Notifications</span>
+            <p>Nodemailer confirmations for signup &amp; orders.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">🧪 Testing Suite</span>
+            <p>Jest + Supertest coverage — no tests exist today.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">🐳 Docker Support</span>
+            <p>Containerized, reproducible environments.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">🔁 CI/CD Pipeline</span>
+            <p>Automated tests &amp; deployments on push.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">👨‍💼 Admin Dashboard</span>
+            <p>Role-based product, user &amp; order management.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">🚦 Rate Limiting</span>
+            <p>Throttle abuse and protect auth endpoints.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">🖼️ Image Optimization</span>
+            <p>Resize/compress uploads via Sharp or Cloudinary.</p>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <span class="roadmap-badge">Planned</span>
+          <div class="roadmap-body">
+            <span class="r-title">🏷️ Role-Based Access</span>
+            <p>Enforce customer vs seller scopes end-to-end.</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section>
