@@ -1,7 +1,5 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API/main/public/banner.png" alt="E-Commerce API Banner" width="0" height="0" />
-
 # 🛒 E-Commerce REST API
 
 **A production-grade, modular backend API for e-commerce — authentication, products, cart, orders, and a polymorphic likes system, built with Node.js, Express & MongoDB.**
@@ -18,10 +16,6 @@
 <br />
 
 🌐 **[Live API](https://e-comm-project-using-rest-api-1.onrender.com)** &nbsp;•&nbsp; 📖 **[Interactive API Docs](https://e-comm-project-using-rest-api-1.onrender.com/api-docs)**
-
-<br />
-
-<img src="https://komarev.com/ghpvc/?username=Mrutunjaya-Panda&label=Profile%20Views&color=0e75b6&style=flat" alt="Profile Views" />
 
 </div>
 
@@ -843,30 +837,35 @@ main (stable)
 
 <br />
 
-[![GitHub followers](https://img.shields.io/github/followers/Mrutunjaya-Panda?style=for-the-badge&color=blue)](https://github.com/Mrutunjaya-Panda?tab=followers)
+[![GitHub followers](https://img.shields.io/github/followers/Mrutunjaya-Panda?label=Followers&style=for-the-badge&color=blue)](https://github.com/Mrutunjaya-Panda?tab=followers)
 [![GitHub stars](https://img.shields.io/github/stars/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API?style=for-the-badge&color=yellow)](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API?style=for-the-badge&color=purple)](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API/network/members)
+[![Repo size](https://img.shields.io/github/repo-size/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API?style=for-the-badge&color=orange)](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API)
+[![Last commit](https://img.shields.io/github/last-commit/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API?style=for-the-badge&color=green)](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API/commits)
+[![Open issues](https://img.shields.io/github/issues/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API?style=for-the-badge&color=red)](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API/issues)
 
 <br />
 
-<img src="https://github-readme-stats.vercel.app/api?username=Mrutunjaya-Panda&show_icons=true&theme=radical&hide_border=true&bg_color=0d1117&title_color=58a6ff&text_color=c9d1d9" width="48%" alt="GitHub Stats" />
-<img src="https://github-readme-streak-stats.herokuapp.com/?user=Mrutunjaya-Panda&theme=radical&hide_border=true&background=0d1117&stroke=58a6ff&ring=58a6ff&fire=58a6ff&currStreakLabel=c9d1d9" width="48%" alt="GitHub Streak" />
-
-<br /><br />
-
-<img src="https://github-readme-activity-graph.vercel.app/graph?username=Mrutunjaya-Panda&bg_color=0d1117&color=58a6ff&line=58a6ff&point=ffffff&area=true&area_color=1f6feb&hide_border=true" width="80%" alt="Activity Graph" />
-
-<br />
-
-> *"Code is like humor. When you have to explain it, it's bad."* — Cory House
-
-<br />
-
-**Project:** `E-Commerce REST API` &nbsp;|&nbsp; **Stack:** Node.js, Express, MongoDB, JWT
+```text
+╔════════════════════════════════════════════════════════════════════════╗
+║                                                                      ║
+║   " Code is like humor. When you have to explain it, it's bad."     ║
+║                                                  — Cory House        ║
+║                                                                      ║
+║   Building scalable systems, one endpoint at a time.  🚀 ☕ 💻       ║
+║                                                                      ║
+╠════════════════════════════════════════════════════════════════════════╣
+║  Project: E-Commerce REST API  │  Stack: Node.js · Express · MongoDB ║
+╚════════════════════════════════════════════════════════════════════════╝
+```
 
 <br />
 
-*"Crafted with ☕ and 💻"*
+[![Node.js](https://img.shields.io/badge/Built_with-Node.js-339933?logo=nodedotjs&logoColor=white&style=flat-square)]()
+[![Express](https://img.shields.io/badge/Built_with-Express-000000?logo=express&logoColor=white&style=flat-square)]()
+[![MongoDB](https://img.shields.io/badge/Built_with-MongoDB-47A248?logo=mongodb&logoColor=white&style=flat-square)]()
+[![JWT](https://img.shields.io/badge/Auth-JWT-000000?logo=jsonwebtokens&logoColor=white&style=flat-square)]()
+[![Bcrypt](https://img.shields.io/badge/Security-Bcrypt-003A70?logo=letsencrypt&logoColor=white&style=flat-square)]()
 
 </div>
 
@@ -888,13 +887,10 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 ---
 
-<div align="center">
-
 **⭐ If you found this project useful, consider giving it a star! ⭐**
 
-<img src="https://img.shields.io/badge/Made%20with-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Made with Node.js" />
-<img src="https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge" alt="Made with Love" />
-<img src="https://img.shields.io/badge/Made%20with-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="Made with MongoDB" />
+[![Made with Node.js](https://img.shields.io/badge/Made%20with-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge)](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API)
+[![Made with MongoDB](https://img.shields.io/badge/Made%20with-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com)
 
-</div>
 </div>
