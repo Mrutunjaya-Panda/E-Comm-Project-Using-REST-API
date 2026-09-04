@@ -1,0 +1,486 @@
+{
+  "info": {
+    "name": "E-Commerce REST API",
+    "description": "Complete API collection for E-Commerce REST API built with Node.js, Express & MongoDB. Import this file in Postman to test all endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://e-comm-project-using-rest-api.onrender.com",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "🏠 Landing Page",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/",
+          "host": ["{{baseUrl}}"],
+          "path": [""]
+        },
+        "description": "Displays the project landing page served at the root route."
+      },
+      "response": []
+    },
+    {
+      "name": "👤 Users",
+      "item": [
+        {
+          "name": "Sign Up",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\",\n  \"type\": \"customer\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/signup",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "signup"]
+            },
+            "description": "Register a new user account. Returns the created user. Public route — no token required."
+          },
+          "response": []
+        },
+        {
+          "name": "Sign In",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"Password123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/signin",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "signin"]
+            },
+            "description": "Authenticate with email and password to receive a JWT token. Copy the token from response and set it as the token collection variable to authenticate all protected endpoints."
+          },
+          "response": []
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newPassword\": \"NewPass123\",\n  \"confirmPassword\": \"NewPass123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/resetPassword",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "resetPassword"]
+            },
+            "description": "Reset the password of the authenticated user. Requires a valid JWT token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🛍️ Products",
+      "item": [
+        {
+          "name": "Get All Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            },
+            "description": "Retrieve a list of all products in the store. Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Product by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", ":id"]
+            },
+            "description": "Retrieve the full details of a single product by its MongoDB ObjectId. Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Add Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "name",
+                  "value": "Wireless Headphones",
+                  "type": "text"
+                },
+                {
+                  "key": "price",
+                  "value": "2999",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Premium wireless headphones",
+                  "type": "text"
+                },
+                {
+                  "key": "categories",
+                  "value": "64b1f4c2e4b0f5a3d8e9b456",
+                  "type": "text"
+                },
+                {
+                  "key": "imageUrl",
+                  "type": "file",
+                  "src": "/path/to/headphones.jpg"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products"]
+            },
+            "description": "Create a new product using multipart/form-data, with an optional image upload. The categories field must be a comma-separated list of existing Category ObjectIds (the API expects ObjectId references, not category names). Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Rate a Product",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/rate?productId=64b1f4c2e4b0f5a3d8e9a123&rating=4",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "rate"],
+              "query": [
+                {
+                  "key": "productId",
+                  "value": "64b1f4c2e4b0f5a3d8e9a123"
+                },
+                {
+                  "key": "rating",
+                  "value": "4"
+                }
+              ]
+            },
+            "description": "Submit a numeric rating (1–5) for a specific product via query parameters. Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Filter Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/filter?minPrice=500&maxPrice=5000&categories=['Electronics']",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "filter"],
+              "query": [
+                {
+                  "key": "minPrice",
+                  "value": "500"
+                },
+                {
+                  "key": "maxPrice",
+                  "value": "5000"
+                },
+                {
+                  "key": "categories",
+                  "value": "['Electronics']"
+                }
+              ]
+            },
+            "description": "Filter products by minimum price, maximum price, and/or categories. Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Average Price by Category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/averagePrice",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "products", "averagePrice"]
+            },
+            "description": "Returns the average product price grouped by each category, computed with a MongoDB aggregation pipeline. Requires a valid JWT token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "🛒 Cart",
+      "item": [
+        {
+          "name": "Get Cart Items",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cartItems",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cartItems"]
+            },
+            "description": "Retrieve all cart items belonging to the authenticated user. Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Add Item to Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": \"64abc123def456789\",\n  \"quantity\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/cartItems/add",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cartItems", "add"]
+            },
+            "description": "Add a product to the authenticated user's shopping cart with a specified quantity. Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Cart Item",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cartItems/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "cartItems", ":id"]
+            },
+            "description": "Remove a specific cart item by its MongoDB ObjectId. Requires a valid JWT token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "📦 Orders",
+      "item": [
+        {
+          "name": "Place Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cartItemIds\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/orders",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "orders"]
+            },
+            "description": "Place a new order for all of the authenticated user's current cart items: it computes the total amount, decrements product stock, clears the cart, and commits inside a single MongoDB transaction. Note: the server does not consume this request body — cartItemIds is ignored and the entire cart is always ordered. Requires a valid JWT token."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "❤️ Likes",
+      "item": [
+        {
+          "name": "Like a Product or Category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": \"64b1f4c2e4b0f5a3d8e9a123\",\n  \"type\": \"Product\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/likes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "likes"]
+            },
+            "description": "Like a product or category by providing its ObjectId and entity type ('Product' or 'Category'). Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Likes for an Entity",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/likes?id=64b1f4c2e4b0f5a3d8e9a123&type=Product",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "likes"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "64b1f4c2e4b0f5a3d8e9a123"
+                },
+                {
+                  "key": "type",
+                  "value": "Product"
+                }
+              ]
+            },
+            "description": "Retrieve all likes for a specific product or category via query parameters (id, type). Requires a valid JWT token."
+          },
+          "response": []
+        },
+        {
+          "name": "Get User's Likes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "{{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/likes/user",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "likes", "user"]
+            },
+            "description": "Retrieve all products and categories liked by the authenticated user. Requires a valid JWT token."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

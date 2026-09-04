@@ -3,6 +3,7 @@
 //  such as creating a new user, updating an existing user, deleting a user, etc.
 
 import mongoose from "mongoose";
+import bcrypt from "bcrypt"; // [FIX] added so hashing can happen inside the pre('save') hook
 
 export const userSchema = new mongoose.Schema({
   name: {
@@ -33,6 +34,20 @@ export const userSchema = new mongoose.Schema({
     enum: ["customer", "seller"],
     required: true
   }
+});
+
+// [FIX] Hash the password in a Mongoose pre('save') hook (Option A).
+// Mongoose runs document VALIDATION *before* pre-save hooks, so the custom
+// password validator above now receives the PLAINTEXT password (and passes for
+// a strong one). This hook then hashes it immediately before it is written to
+// the database. Previously the controller hashed the password first, so the
+// validator only ever saw the bcrypt HASH (e.g. "$2b$10$...") which contains
+// '$', '.', '/' — outside [a-zA-Z\d] — so it ALWAYS failed validation.
+// Mongoose 9 pattern for async middleware: NO `next` parameter — just return a promise.
+userSchema.pre("save", async function () {
+  // Only re-hash when the password field actually changed (avoids double-hashing on updates)
+  if (!this.isModified("password")) return;
+  this.password = await bcrypt.hash(this.password, 10);
 });
 
 //export const User = mongoose.model("User", userSchema);

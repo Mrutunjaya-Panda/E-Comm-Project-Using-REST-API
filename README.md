@@ -24,6 +24,7 @@
 - [Tech Stack](#-tech-stack)
 - [Project Architecture](#-project-architecture)
 - [API Endpoints](#-api-endpoints)
+- [How to Use the API](#-how-to-use-the-api)
 - [Getting Started](#-getting-started)
 - [Key Features (Detailed)](#-key-features-detailed)
 - [Middleware Pipeline](#-middleware-pipeline)
@@ -44,7 +45,7 @@ The project demonstrates how a real-world backend is **architected for maintaina
 
 - **Feature-based modular architecture** — the codebase is organized into self-contained domains (`product/`, `user/`, `cart/`, `order/`, `like/`), each bundling its own routes, controller, repository, and schema. This keeps related code together, honors the Single Responsibility Principle, and makes the project easy to navigate and extend.
 - **Repository pattern** — every feature isolates database access behind a repository layer. Controllers never touch the database directly; they delegate to repositories that wrap Mongoose/native-driver queries. This decouples business logic from data access, simplifies testing (repositories can be mocked), and lets queries evolve independently.
-- **JWT over server sessions** — authentication is stateless: a signed token (issued at `/signin`) is verified by a `jwtAuth` middleware on every protected route. Because no session state is stored server-side, the API scales horizontally across instances trivially. Passwords are never stored in plaintext — they are hashed with **bcrypt** (10 salt rounds) before touching the database.
+- **JWT over server sessions** — authentication is stateless: a signed token (issued at `/signin`) is verified by a `jwtAuth` middleware on every protected route. Because no session state is stored server-side, the API scales horizontally across instances trivially. Passwords are never stored in plaintext — they are hashed with **bcrypt** (10 salt rounds) via a centralized Mongoose `pre('save')` hook before touching the database.
 
 Under the hood, the API leans on MongoDB's strengths: **polymorphic references** (`refPath`) let a single Likes schema target both products and categories, and order placement runs inside a **MongoDB transaction** so inventory updates and cart clearing are atomic.
 
@@ -106,7 +107,7 @@ E-COM-API/
     ├── error-handler/
     │   └── applicationError.js     # Custom ApplicationError class
     ├── middlewares/
-    │   ├── jwt.middleware.js       # JWT verification → sets req.userId
+    │   ├── jwt.middleware.js       # JWT verification (Authorization header passed verbatim, no Bearer) → sets req.userId
     │   ├── logger.middleware.js    # Winston request logging (redacts auth routes)
     │   ├── fileupload.middleware.js# Multer disk-storage config
     │   ├── basicAuth.middleware.js # Legacy HTTP Basic auth (kept for reference)
@@ -228,6 +229,55 @@ E-COM-API/
 
 ---
 
+## 🛠️ How to Use the API
+
+### 1. Authenticate (sign up → sign in)
+
+```bash
+# 1) Create an account — password must be ≥8 chars with at least one
+#    uppercase, one lowercase, and one number (e.g. Password123)
+curl -X POST http://localhost:3200/api/users/signup \
+  -H "Content-Type: application/json" \
+  -d '{"name":"John Doe","email":"john@example.com","password":"Password123","type":"customer"}'
+
+# 2) Sign in — the response is the RAW JWT string (no JSON wrapper)
+curl -X POST http://localhost:3200/api/users/signin \
+  -H "Content-Type: application/json" \
+  -d '{"email":"john@example.com","password":"Password123"}'
+```
+
+### 2. Use the token on protected routes
+
+```bash
+# Paste the JWT from step 2 into the Authorization header — NO "Bearer " prefix
+curl http://localhost:3200/api/products -H "Authorization: <JWT-from-signin>"
+```
+
+### Per-endpoint input reference
+
+| Endpoint | How to call it |
+|----------|----------------|
+| `POST /api/users/signup` | JSON `{name, email, password, type}`. `type` ∈ `customer` \| `seller`. |
+| `POST /api/users/signin` | JSON `{email, password}` → returns the raw JWT string. |
+| `PUT /api/users/resetPassword` | JSON `{newPassword, confirmPassword}` — **both** required and must match. |
+| `GET /api/products` | No input. |
+| `GET /api/products/:id` | `:id` = product ObjectId. |
+| `POST /api/products` | `multipart/form-data`: `name`, `price`, `description`, optional `imageUrl` file. `categories` (optional) = **comma-separated Category ObjectIds** — category names are **not** accepted. |
+| `POST /api/products/rate` | Query: `?productId=<ObjectId>&rating=<1-5>`. |
+| `GET /api/products/filter` | Query: `?minPrice=&maxPrice=&categories=['Electronics']` (single-quoted array string). |
+| `GET /api/products/averagePrice` | No input. |
+| `GET /api/cartItems` | No input. |
+| `POST /api/cartItems/add` | JSON `{productId, quantity}`. |
+| `DELETE /api/cartItems/:id` | `:id` = cart item ObjectId. |
+| `POST /api/orders` | **No request body is read** — always orders the user's entire current cart. |
+| `POST /api/likes` | JSON `{id: <product-or-category-ObjectId>, type: "Product" \| "Category"}`. |
+| `GET /api/likes` | Query: `?id=<ObjectId>&type=Product`. |
+| `GET /api/likes/user` | No input. |
+
+> 💡 You can also try every endpoint interactively in the [Swagger UI](https://e-comm-project-using-rest-api.onrender.com/api-docs) — click **Authorize** and paste the raw JWT (no `Bearer`).
+
+---
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -291,9 +341,11 @@ E-COM-API/
 
 **How it works:** On successful sign-in (`POST /api/users/signin`), the controller issues a JWT signed with `JWT_SECRET` and a 1-hour expiry, carrying `{ id, email }`. Clients send this token in the `Authorization` header on subsequent requests. The `jwt.middleware.js` (`src/middlewares/jwt.middleware.js`) verifies the token, and on success attaches the user's `id` to `req.userId` — which downstream controllers use to scope queries (e.g., "my cart", "my likes"). Invalid or missing tokens return `401`.
 
-**Why this approach:** JWT is **stateless** — no server-side session store, so the API scales horizontally without sticky sessions or a session database. Combined with bcrypt-hashed passwords, it provides a solid, production-shaped auth flow.
+> ⚠️ **Send the token verbatim — no `Bearer` prefix.** `/signin` returns the JWT as a **plain string**, and `jwtAuth` reads `req.headers['authorization']` and hands it straight to `jwt.verify()` — it does **not** strip a `Bearer ` prefix. So `Authorization: Bearer <token>` → `401 Invalid token`. Always send `Authorization: <token>`.
 
-**Files involved:** `src/middlewares/jwt.middleware.js`, `src/features/user/user.controller.js`, `src/features/user/user.repository.js`.
+**Why this approach:** JWT is **stateless** — no server-side session store, so the API scales horizontally without sticky sessions or a session database. Combined with bcrypt-hashed passwords, it provides a solid, production-shaped auth flow. Hashing is centralized in a Mongoose `pre('save')` hook on `user.schema.js`, so the schema's password validator always sees the **plaintext** (and the hook re-hashes only when the password field actually changes).
+
+**Files involved:** `src/middlewares/jwt.middleware.js`, `src/features/user/user.controller.js`, `src/features/user/user.repository.js`, `src/features/user/user.schema.js`.
 </details>
 
 <details>

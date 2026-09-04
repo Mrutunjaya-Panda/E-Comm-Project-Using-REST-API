@@ -192,23 +192,12 @@
             "type": "string",
             "example": "64b1f4c2e4b0f5a3d8e9d000"
           },
-          "items": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CartItem"
-            }
-          },
           "totalAmount": {
             "type": "number",
             "format": "float",
             "example": 5999.98
           },
-          "status": {
-            "type": "string",
-            "enum": ["pending", "processing", "shipped", "delivered", "cancelled"],
-            "example": "pending"
-          },
-          "createdAt": {
+          "timeStamp": {
             "type": "string",
             "format": "date-time",
             "example": "2024-08-30T06:17:00.000Z"
@@ -330,7 +319,7 @@
             "multipart/form-data": {
               "schema": {
                 "type": "object",
-                "required": ["name", "price"],
+                "required": ["name", "price", "description"],
                 "properties": {
                   "name": {
                     "type": "string",
@@ -349,13 +338,8 @@
                   },
                   "categories": {
                     "type": "string",
-                    "description": "Comma-separated list of category names",
-                    "example": "Electronics, Audio"
-                  },
-                  "sizes": {
-                    "type": "string",
-                    "description": "Comma-separated list of available sizes (if applicable)",
-                    "example": "S, M, L, XL"
+                    "description": "Comma-separated list of existing Category ObjectIds (the API converts each value to an ObjectId, so category names are not accepted)",
+                    "example": "64b1f4c2e4b0f5a3d8e9b456,64b1f4c2e4b0f5a3d8e9b457"
                   },
                   "imageUrl": {
                     "type": "string",
@@ -594,15 +578,6 @@
               }
             }
           },
-          "400": {
-            "description": "Bad request - invalid productId or rating value.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "example": { "message": "Invalid productId or rating." }
-              }
-            }
-          },
           "401": {
             "description": "Unauthorized - JWT token is missing or invalid.",
             "content": {
@@ -613,7 +588,7 @@
             }
           },
           "404": {
-            "description": "Product not found.",
+            "description": "Product or user not found.",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorResponse" },
@@ -685,7 +660,7 @@
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "example": { "message": "Cast to ObjectId failed for value at path _id." }
+                "example": { "message": "Invalid product id" }
               }
             }
           },
@@ -823,30 +798,22 @@
         },
         "responses": {
           "200": {
-            "description": "User signed in successfully. JWT token is returned.",
+            "description": "User signed in successfully. Returns a raw JWT token string (not a JSON object). Use this string verbatim as the Authorization header value on protected routes.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjFmNGMyZTRiMGY1YTNkOGU5ZDAwMCIsImVtYWlsIjoibXJ1dHVuamF5YUBleGFtcGxlLmNvbSIsImlhdCI6MTY5MTIzNDU2NywiZXhwIjoxNjkxMzIwOTY3fQ.abc123signature"
-                    }
-                  }
-                },
-                "example": {
-                  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjFmNGMyZTRiMGY1YTNkOGU5ZDAwMCIsImVtYWlsIjoibXJ1dHVuamF5YUBleGFtcGxlLmNvbSIsImlhdCI6MTY5MTIzNDU2NywiZXhwIjoxNjkxMzIwOTY3fQ.abc123signature"
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjFmNGMyZTRiMGY1YTNkOGU5ZDAwMCIsImVtYWlsIjoibXJ1dHVuamF5YUBleGFtcGxlLmNvbSIsImlhdCI6MTY5MTIzNDU2NywiZXhwIjoxNjkxMzIwOTY3fQ.abc123signature"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad request - incorrect email or password.",
+          "401": {
+            "description": "Unauthorized - incorrect email or password.",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "example": { "message": "Incorrect credentials." }
+                "example": { "message": "Incorrect credentials" }
               }
             }
           },
@@ -874,11 +841,16 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["newPassword"],
+                "required": ["newPassword", "confirmPassword"],
                 "properties": {
                   "newPassword": {
                     "type": "string",
                     "description": "The new password. Must be at least 8 characters with one uppercase, one lowercase, and one number.",
+                    "example": "NewSecurePass2"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "description": "Must exactly match newPassword. If it differs, the request is rejected.",
                     "example": "NewSecurePass2"
                   }
                 }
@@ -888,22 +860,20 @@
         },
         "responses": {
           "200": {
-            "description": "Password reset successfully.",
+            "description": "Password updated successfully.",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/SuccessResponse" },
-                "example": { "message": "Password reset successfully." }
+                "example": { "message": "Password updated successfully" }
               }
             }
           },
           "400": {
-            "description": "Bad request - new password does not meet validation requirements.",
+            "description": "Bad request - newPassword and confirmPassword do not match, or the new password fails validation.",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "example": {
-                  "message": "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, and one number"
-                }
+                "example": { "message": "New password and confirm password do not match" }
               }
             }
           },
@@ -1013,25 +983,20 @@
         },
         "responses": {
           "201": {
-            "description": "Item added to cart successfully.",
+            "description": "Item added to cart successfully (or existing item quantity updated).",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/CartItem" },
-                "example": {
-                  "_id": "64b1f4c2e4b0f5a3d8e9e111",
-                  "productId": "64b1f4c2e4b0f5a3d8e9a123",
-                  "userId": "64b1f4c2e4b0f5a3d8e9d000",
-                  "quantity": 2
-                }
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" },
+                "example": { "message": "Item added to cart successfully/updated." }
               }
             }
           },
           "400": {
-            "description": "Bad request - missing or invalid productId/quantity.",
+            "description": "Bad request - missing productId/quantity, or quantity is not positive.",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "example": { "message": "cartItemSchema validation failed: quantity: Path `quantity` (0) is less than minimum allowed value (1)." }
+                "example": { "message": "productId and quantity are required" }
               }
             }
           },
@@ -1115,59 +1080,32 @@
       "post": {
         "tags": ["Orders"],
         "summary": "Place an order",
-        "description": "Places a new order for the authenticated user, converting their cart items into a confirmed order.",
+        "description": "Places a new order for the authenticated user's ENTIRE current cart: it computes the total amount, decrements product stock, and clears the cart inside a single MongoDB transaction. NOTE: this endpoint does not consume a request body - the whole cart is always ordered, regardless of any body sent.",
         "security": [{ "JWT": [] }],
-        "requestBody": {
-          "required": false,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "cartItemIds": {
-                    "type": "array",
-                    "items": { "type": "string" },
-                    "description": "Optional list of specific cart item ObjectIds to order. If omitted, all cart items are ordered.",
-                    "example": [
-                      "64b1f4c2e4b0f5a3d8e9e111",
-                      "64b1f4c2e4b0f5a3d8e9e112"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
         "responses": {
           "201": {
             "description": "Order placed successfully.",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Order" },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Order placed successfully."
+                    },
+                    "order": { "$ref": "#/components/schemas/Order" }
+                  }
+                },
                 "example": {
-                  "_id": "64b1f4c2e4b0f5a3d8e9f222",
-                  "userId": "64b1f4c2e4b0f5a3d8e9d000",
-                  "items": [
-                    {
-                      "_id": "64b1f4c2e4b0f5a3d8e9e111",
-                      "productId": "64b1f4c2e4b0f5a3d8e9a123",
-                      "userId": "64b1f4c2e4b0f5a3d8e9d000",
-                      "quantity": 2
-                    }
-                  ],
-                  "totalAmount": 5999.98,
-                  "status": "pending",
-                  "createdAt": "2024-08-30T06:17:00.000Z"
+                  "message": "Order placed successfully.",
+                  "order": {
+                    "_id": "64b1f4c2e4b0f5a3d8e9f222",
+                    "userId": "64b1f4c2e4b0f5a3d8e9d000",
+                    "totalAmount": 5999.98,
+                    "timeStamp": "2024-08-30T06:17:00.000Z"
+                  }
                 }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - cart is empty or invalid cart item IDs provided.",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "example": { "message": "No items in cart to place an order." }
               }
             }
           },
@@ -1223,26 +1161,21 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Like recorded successfully.",
+          "200": {
+            "description": "Item liked successfully.",
             "content": {
               "application/json": {
-                "schema": { "$ref": "#/components/schemas/Like" },
-                "example": {
-                  "_id": "64b1f4c2e4b0f5a3d8e9g333",
-                  "user": "64b1f4c2e4b0f5a3d8e9d000",
-                  "likeable": "64b1f4c2e4b0f5a3d8e9a123",
-                  "types": "Product"
-                }
+                "schema": { "$ref": "#/components/schemas/SuccessResponse" },
+                "example": { "message": "Item liked successfully" }
               }
             }
           },
           "400": {
-            "description": "Bad request - missing id/type or invalid type value.",
+            "description": "Bad request - missing id/type or invalid type value (must be Product or Category).",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "example": { "message": "likeSchema validation failed: types: `InvalidType` is not a valid enum value for path `types`." }
+                "example": { "message": "Invalid type, must be either Product or Category" }
               }
             }
           },
@@ -1318,11 +1251,11 @@
             }
           },
           "400": {
-            "description": "Bad request - missing or invalid id/type query parameters.",
+            "description": "Bad request - invalid type value (must be Product or Category).",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/ErrorResponse" },
-                "example": { "message": "id and type query parameters are required." }
+                "example": { "message": "Invalid type, must be either Product or Category" }
               }
             }
           },

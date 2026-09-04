@@ -2,6 +2,8 @@ import UserModel from "./user.model.js";
 import jwt from "jsonwebtoken";
 import UserRepository from "./user.repository.js";
 //for hashing password
+// [FIX] Hashing now happens in the pre('save') hook in user.schema.js, but bcrypt is
+// STILL imported here because signIn uses bcrypt.compare() to verify the password.
 import bcrypt from "bcrypt";
 import { logger } from "../../middlewares/logger.middleware.js";
 export default class UserController {
@@ -27,9 +29,12 @@ export default class UserController {
       // so even if someone gets access to the database, they will not be able to see the actual password of the user, and they will not be able to use the hashed password to login to the application,
       // because when user tries to login to the application, we will hash the password entered by the user and compare it with the hashed password stored in the database, if both are same then only we will allow the user to login to the application,
       // otherwise we will reject the login attempt of the user.
-      const hashedPassword = await bcrypt.hash(password, 10); //10 is the number of salt rounds, which means that the hashing algorithm will run 10 times to generate the hashed password, which makes it more secure, because it will take more time to generate the hashed password, and it will also make it more difficult for attackers to crack the hashed password using brute force attack, because they will have to run the hashing algorithm multiple times to generate the hashed password, which will take more time and resources for them, so it will make it more difficult for attackers to crack the hashed password using brute force attack.
+      // [FIX] Hashing moved to the pre('save') hook in user.schema.js (Option A).
+      // Hashing here made the schema validator run on the bcrypt HASH, which always
+      // failed — even for strong plaintext passwords like "Password123".
+      // const hashedPassword = await bcrypt.hash(password, 10); // <-- old approach (commented out)
 
-      const newUser = new UserModel(name, email, hashedPassword, type);
+      const newUser = new UserModel(name, email, password, type); // [FIX] pass plaintext; hashed in pre('save') hook
       await this.userRepository.SignUp(newUser);
       res.status(201).send(newUser);
     } catch (err) {
@@ -108,8 +113,11 @@ export default class UserController {
         return;
       }
       //hash the new password before storing it in the database, so that even if someone gets access to the database, they will not be able to see the actual password of the user, instead they will see the hashed password, which is not useful for them, because hashing is a one way function, which means that we cannot get the original password from the hashed password,
-      const hashedPassword = await bcrypt.hash(newPassword, 10);
-      await this.userRepository.resetPassword(userId, hashedPassword);
+      // [FIX] Hashing moved to the pre('save') hook in user.schema.js. Passing the hash
+      // here made the schema validator run on the bcrypt HASH (always fails) and the
+      // pre('save') hook would have double-hashed it. Pass plaintext instead.
+      // const hashedPassword = await bcrypt.hash(newPassword, 10); // <-- old approach (commented out)
+      await this.userRepository.resetPassword(userId, newPassword); // [FIX] pass plaintext; hashed in pre('save') hook
       res.status(200).send("Password updated successfully");
     } catch (err) {
     //   logger.error(
