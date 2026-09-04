@@ -1,23 +1,34 @@
 <div align="center">
 
+<img src="https://raw.githubusercontent.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API/main/public/banner.png" alt="E-Commerce API Banner" width="0" height="0" />
+
 # 🛒 E-Commerce REST API
 
 **A production-grade, modular backend API for e-commerce — authentication, products, cart, orders, and a polymorphic likes system, built with Node.js, Express & MongoDB.**
 
-[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=flat-square&logo=nodedotjs&logoColor=white)](https://nodejs.org)
-[![Express](https://img.shields.io/badge/Express-5.2.1-000000?style=flat-square&logo=express&logoColor=white)](https://expressjs.com)
-[![MongoDB](https://img.shields.io/badge/MongoDB-7.2-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://www.mongodb.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
-[![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)]()
-[![Swagger](https://img.shields.io/badge/Swagger-OpenAPI%203.0-85ea2d?style=flat-square&logo=swagger&logoColor=white)]()
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express-5.2.1-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com)
+[![MongoDB](https://img.shields.io/badge/MongoDB-7.2-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=for-the-badge)]()
+[![Swagger](https://img.shields.io/badge/Swagger-OpenAPI%203.0-85ea2d?style=for-the-badge&logo=swagger&logoColor=white)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)]()
+[![Stars](https://img.shields.io/github/stars/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API?style=for-the-badge&color=yellow)]()
 
-🌐 **[Live API](https://e-comm-project-using-rest-api.onrender.com)** &nbsp;•&nbsp; 📖 **[Interactive API Docs](https://e-comm-project-using-rest-api.onrender.com/api-docs)**
+<br />
+
+🌐 **[Live API](https://e-comm-project-using-rest-api-1.onrender.com)** &nbsp;•&nbsp; 📖 **[Interactive API Docs](https://e-comm-project-using-rest-api-1.onrender.com/api-docs)**
+
+<br />
+
+<img src="https://komarev.com/ghpvc/?username=Mrutunjaya-Panda&label=Profile%20Views&color=0e75b6&style=flat" alt="Profile Views" />
 
 </div>
 
 ---
 
-## 📑 Table of Contents
+<details>
+<summary><strong>📑 Table of Contents</strong></summary>
 
 - [About the Project](#-about-the-project)
 - [Live Demo](#-live-demo)
@@ -35,11 +46,17 @@
 - [Author](#-author)
 - [License](#-license)
 
+</details>
+
 ---
 
 ## 📖 About the Project
 
-E-Commerce REST API is a fully-featured backend service that powers the core of an online store: user authentication, product catalog management with categories and reviews, shopping cart operations, order placement, and a polymorphic "likes" system. It is designed to be consumed by any frontend — a web storefront, a mobile app, or an admin dashboard — exposing a clean, documented JSON API over HTTP.
+<div align="center">
+
+> **E-Commerce REST API** is a fully-featured backend service that powers the core of an online store: user authentication, product catalog management with categories and reviews, shopping cart operations, order placement, and a polymorphic "likes" system. It is designed to be consumed by any frontend — a web storefront, a mobile app, or an admin dashboard — exposing a clean, documented JSON API over HTTP.
+
+</div>
 
 The project demonstrates how a real-world backend is **architected for maintainability and scale** rather than thrown together. Three decisions stand out:
 
@@ -49,42 +66,105 @@ The project demonstrates how a real-world backend is **architected for maintaina
 
 Under the hood, the API leans on MongoDB's strengths: **polymorphic references** (`refPath`) let a single Likes schema target both products and categories, and order placement runs inside a **MongoDB transaction** so inventory updates and cart clearing are atomic.
 
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
+
 ---
 
 ## 🌐 Live Demo
 
+<div align="center">
+
 | Resource | URL |
-|----------|-----|
-| 🌐 Production API Base | [https://e-comm-project-using-rest-api.onrender.com](https://e-comm-project-using-rest-api.onrender.com) |
-| 📖 Interactive API Docs (Swagger) | [https://e-comm-project-using-rest-api.onrender.com/api-docs](https://e-comm-project-using-rest-api.onrender.com/api-docs) |
+|:--------:|:---:|
+| 🌐 Production API Base | [https://e-comm-project-using-rest-api-1.onrender.com](https://e-comm-project-using-rest-api-1.onrender.com) |
+| 📖 Interactive API Docs (Swagger) | [https://e-comm-project-using-rest-api-1.onrender.com/api-docs](https://e-comm-project-using-rest-api-1.onrender.com/api-docs) |
 | 💻 GitHub Repository | [https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API) |
 
+</div>
+
 > 💡 The Swagger UI allows you to test all endpoints interactively without any additional tools. Use the **Authorize** button with a JWT token from `/signin`.
+
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
 
 ---
 
 ## 🧰 Tech Stack
 
-| Technology | Version | Purpose in this project |
-|------------|---------|--------------------------|
-| Node.js | 18+ (ES Modules) | Runtime — non-blocking, async backend execution |
-| Express | ^5.2.1 | Web framework — routing & middleware chaining |
-| MongoDB | ^7.2.0 (driver) | NoSQL document database — primary data store |
-| Mongoose | ^9.7.2 | ODM — schema modeling, relationships, polymorphic refs |
-| jsonwebtoken | ^9.0.3 | JWT generation & verification for auth |
-| bcrypt | ^6.0.0 | Password hashing & validation (10 salt rounds) |
+<table>
+  <tr>
+    <td><b>Runtime & Framework</b></td>
+    <td><b>Database & ODM</b></td>
+    <td><b>Auth & Security</b></td>
+  </tr>
+  <tr>
+    <td>
+
+| Technology | Version |
+|------------|---------|
+| Node.js | 18+ (ES Modules) |
+| Express | ^5.2.1 |
+| body-parser | ^2.2.2 |
+
+</td>
+    <td>
+
+| Technology | Version |
+|------------|---------|
+| MongoDB | ^7.2.0 (driver) |
+| Mongoose | ^9.7.2 |
+
+</td>
+    <td>
+
+| Technology | Version |
+|------------|---------|
+| jsonwebtoken | ^9.0.3 |
+| bcrypt | ^6.0.0 |
+
+</td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><b>Utilities</b></td>
+    <td><b>Dev Tools</b></td>
+  </tr>
+  <tr>
+    <td>
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
 | multer | ^2.1.1 | Multipart file uploads for product images |
 | swagger-ui-express | ^5.0.1 | Interactive OpenAPI 3.0 documentation UI |
 | cors | ^2.8.6 | Cross-origin resource sharing policy |
 | dotenv | ^17.4.2 | Loads environment variables from `.env` |
 | winston | ^3.19.0 | Structured JSON request & error logging |
-| body-parser | ^2.2.2 | JSON request-body parsing |
 
-**Dev dependencies:**
+</td>
+    <td>
 
-| Technology | Version | Purpose in this project |
-|------------|---------|--------------------------|
+| Technology | Version | Purpose |
+|------------|---------|---------|
 | nodemon | ^3.1.14 | Auto-restarts the server on file changes during development (`npm run dev`) |
+
+</td>
+  </tr>
+</table>
+
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
 
 ---
 
@@ -142,31 +222,110 @@ E-COM-API/
             └── like.schema.js      # refPath polymorphic references + hooks
 ```
 
-### B. Architecture Pattern
+### B. Request Lifecycle Flow
 
-```text
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│   Client    │────▶│  Middleware  │────▶│   Router    │
-│  (HTTP Req) │     │  JWT + CORS  │     │  (Express)  │
-└─────────────┘     └──────────────┘     └─────────────┘
-                                                │
-                    ┌───────────────────────────┘
-                    ▼
-┌─────────────┐     ┌──────────────┐     ┌─────────────┐
-│  Repository │◀────│  Controller  │────▶│   Models    │
-│  (DB Layer) │     │ (Biz Logic)  │     │  (Mongoose) │
-└─────────────┘     └──────────────┘     └─────────────┘
-        │
-        ▼
-┌─────────────┐
-│   MongoDB   │
-│  (Database) │
-└─────────────┘
+```
+┌──────────────────────────────────────────────────────────────────────────────────────┐
+│                            🔄 REQUEST LIFECYCLE FLOW                                │
+└──────────────────────────────────────────────────────────────────────────────────────┘
+
+ ┌──────────┐    ┌──────────┐    ┌───────────┐    ┌─────────┐    ┌────────────┐
+ │          │    │          │    │           │    │         │    │            │
+ │  Client  │───▶│   CORS   │───▶│  Body-    │───▶│ Winston │───▶│    JWT     │
+ │ (HTTP)   │    │ Policy   │    │  Parser   │    │ Logger  │    │  Middleware│
+ │          │    │          │    │           │    │         │    │            │
+ └──────────┘    └──────────┘    └───────────┘    └─────────┘    └─────┬──────┘
+                                                                       │
+                                                          (protected routes only)
+                                                                       │
+                                                                       ▼
+ ┌──────────┐    ┌──────────┐    ┌───────────┐    ┌─────────┐    ┌────────────┐
+ │          │    │          │    │           │    │         │    │            │
+ │ MongoDB  │◀───│Mongoose/ │◀───│Repository │◀───│Controller│◀───│  Express   │
+ │ Database │    │  Native  │    │  (DB)     │    │ (Logic) │    │  Router    │
+ │          │    │  Driver  │    │           │    │         │    │            │
+ └──────────┘    └──────────┘    └───────────┘    └─────────┘    └────────────┘
+
+                                                                       │
+                                                                       ▼
+                                                              ┌──────────────┐
+                                                              │   Response   │
+                                                              │  (JSON)      │
+                                                              └──────────────┘
 ```
 
-**Request lifecycle:** Client → CORS → body-parser → Winston logger → **JWT middleware** (protected routes) → feature router → controller (business logic) → repository (DB layer) → Mongoose/native models → MongoDB → response back through the controller, with errors funneled into a centralized error-handling middleware.
+> **Request lifecycle:** Client → CORS → body-parser → Winston logger → **JWT middleware** (protected routes) → feature router → controller (business logic) → repository (DB layer) → Mongoose/native models → MongoDB → response back through the controller, with errors funneled into a centralized error-handling middleware.
 
-### C. Design Patterns Used
+### C. Authentication Flow
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                      🔐 AUTHENTICATION FLOW                        │
+└─────────────────────────────────────────────────────────────────────┘
+
+  SIGN UP (POST /api/users/signup)
+  ┌──────────┐   ┌──────────────┐   ┌──────────┐   ┌──────────┐
+  │  Client  │──▶│  Validate    │──▶│  Hash    │──▶│  Save to │──▶ ✓ 201
+  │  Request │   │  Input +     │   │  Password│   │  MongoDB │
+  │          │   │  Check Dup   │   │  (bcrypt)│   │          │
+  └──────────┘   └──────────────┘   └──────────┘   └──────────┘
+
+  SIGN IN (POST /api/users/signin)
+  ┌──────────┐   ┌──────────────┐   ┌──────────┐   ┌──────────┐
+  │  Client  │──▶│  Find User   │──▶│  Compare │──▶│  Issue   │──▶ ✓ JWT Token
+  │  Request │   │  by Email    │   │  Password│   │  JWT     │
+  │          │   │              │   │  (bcrypt)│   │  (1h exp)│
+  └──────────┘   └──────────────┘   └──────────┘   └──────────┘
+
+  PROTECTED REQUEST
+  ┌──────────┐   ┌──────────────┐   ┌──────────┐   ┌──────────┐
+  │  Client  │──▶│  Extract JWT │──▶│  Verify  │──▶│  Set     │──▶ Controller
+  │  + Token │   │  from Header │   │  Token   │   │ req.userId│
+  │          │   │              │   │  (verify)│   │          │
+  └──────────┘   └──────────────┘   └──────────┘   └──────────┘
+```
+
+### D. Order Placement Flow (Transaction)
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                   📦 ORDER PLACEMENT (TRANSACTION)                 │
+└─────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────┐
+  │ Start        │
+  │ Transaction  │
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐     ┌──────────────────┐
+  │ Fetch User's │────▶│  Aggregation     │
+  │ Cart Items   │     │  Pipeline:       │
+  │              │     │  $lookup → price │
+  └──────────────┘     │  $unwind         │
+                       │  $addFields      │
+                       └────────┬─────────┘
+                                │
+                                ▼
+                       ┌──────────────────┐     ┌──────────────────┐
+                       │ Insert Order     │────▶│ Decrement Stock  │
+                       │ Document         │     │ on Products      │
+                       └──────────────────┘     └────────┬─────────┘
+                                                         │
+                                                         ▼
+                                                ┌──────────────────┐
+                                                │ Clear User's     │
+                                                │ Cart             │
+                                                └────────┬─────────┘
+                                                         │
+                                                         ▼
+                                                ┌──────────────────┐
+                                                │ Commit           │
+                                                │ Transaction ✓    │
+                                                └──────────────────┘
+```
+
+### E. Design Patterns Used
 
 | Pattern | Where Used | Benefit |
 |---------|-----------|---------|
@@ -180,6 +339,12 @@ E-COM-API/
 | ES Modules (`type: module`) | `package.json`, all sources | Modern, tree-shakeable import/export |
 | Factory (model creation) | Mongoose `model()` | Standardized document creation |
 
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
+
 ---
 
 ## 📡 API Endpoints
@@ -189,43 +354,49 @@ E-COM-API/
 ### 🛍️ Products
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/products` | Get all products | ✅ |
-| GET | `/api/products/:id` | Get a single product by ID | ✅ |
-| POST | `/api/products` | Add a new product (multipart, optional image upload) | ✅ |
-| POST | `/api/products/rate` | Rate a product (`productId`, `rating` query params) | ✅ |
-| GET | `/api/products/filter` | Filter products by `minPrice`, `maxPrice`, `categories` | ✅ |
-| GET | `/api/products/averagePrice` | Average product price per category (aggregation) | ✅ |
+|--------|----------|-------------|:-------------:|
+| `GET` | `/api/products` | Get all products | ✅ |
+| `GET` | `/api/products/:id` | Get a single product by ID | ✅ |
+| `POST` | `/api/products` | Add a new product (multipart, optional image upload) | ✅ |
+| `POST` | `/api/products/rate` | Rate a product (`productId`, `rating` query params) | ✅ |
+| `GET` | `/api/products/filter` | Filter products by `minPrice`, `maxPrice`, `categories` | ✅ |
+| `GET` | `/api/products/averagePrice` | Average product price per category (aggregation) | ✅ |
 
 ### 👤 Users
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/users/signup` | Register a new user (name, email, password, type) | ❌ |
-| POST | `/api/users/signin` | Sign in → returns a JWT token | ❌ |
-| PUT | `/api/users/resetPassword` | Reset password (authenticated, `newPassword` + `confirmPassword`) | ✅ |
+|--------|----------|-------------|:-------------:|
+| `POST` | `/api/users/signup` | Register a new user (name, email, password, type) | ❌ |
+| `POST` | `/api/users/signin` | Sign in → returns a JWT token | ❌ |
+| `PUT` | `/api/users/resetPassword` | Reset password (authenticated, `newPassword` + `confirmPassword`) | ✅ |
 
 ### 🛒 Cart
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/api/cartItems` | Get the authenticated user's cart items | ✅ |
-| POST | `/api/cartItems/add` | Add a product to the cart (`productId`, `quantity`) | ✅ |
-| DELETE | `/api/cartItems/:id` | Remove a cart item by ID | ✅ |
+|--------|----------|-------------|:-------------:|
+| `GET` | `/api/cartItems` | Get the authenticated user's cart items | ✅ |
+| `POST` | `/api/cartItems/add` | Add a product to the cart (`productId`, `quantity`) | ✅ |
+| `DELETE` | `/api/cartItems/:id` | Remove a cart item by ID | ✅ |
 
 ### 📦 Orders
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/orders` | Place an order (converts cart → order, runs in a transaction) | ✅ |
+|--------|----------|-------------|:-------------:|
+| `POST` | `/api/orders` | Place an order (converts cart → order, runs in a transaction) | ✅ |
 
 ### ❤️ Likes
 
 | Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/api/likes` | Like a product or category (`id`, `type`) | ✅ |
-| GET | `/api/likes` | Get likes for an entity (`id`, `type` query params) | ✅ |
-| GET | `/api/likes/user` | Get all likes by the authenticated user | ✅ |
+|--------|----------|-------------|:-------------:|
+| `POST` | `/api/likes` | Like a product or category (`id`, `type`) | ✅ |
+| `GET` | `/api/likes` | Get likes for an entity (`id`, `type` query params) | ✅ |
+| `GET` | `/api/likes/user` | Get all likes by the authenticated user | ✅ |
+
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
 
 ---
 
@@ -274,7 +445,13 @@ curl http://localhost:3200/api/products -H "Authorization: <JWT-from-signin>"
 | `GET /api/likes` | Query: `?id=<ObjectId>&type=Product`. |
 | `GET /api/likes/user` | No input. |
 
-> 💡 You can also try every endpoint interactively in the [Swagger UI](https://e-comm-project-using-rest-api.onrender.com/api-docs) — click **Authorize** and paste the raw JWT (no `Bearer`).
+> 💡 You can also try every endpoint interactively in the [Swagger UI](https://e-comm-project-using-rest-api-1.onrender.com/api-docs) — click **Authorize** and paste the raw JWT (no `Bearer`).
+
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
 
 ---
 
@@ -332,12 +509,18 @@ curl http://localhost:3200/api/products -H "Authorization: <JWT-from-signin>"
 | `CORS_ORIGIN` | *(optional)* Allowed cross-origin origin | `http://localhost:5500` |
 | `PORT` | *(optional)* Server listen port | `3200` |
 
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
+
 ---
 
 ## ✨ Key Features (Detailed)
 
 <details>
-<summary>🔐 JWT Authentication System</summary>
+<summary><b>🔐 JWT Authentication System</b></summary>
 
 **How it works:** On successful sign-in (`POST /api/users/signin`), the controller issues a JWT signed with `JWT_SECRET` and a 1-hour expiry, carrying `{ id, email }`. Clients send this token in the `Authorization` header on subsequent requests. The `jwt.middleware.js` (`src/middlewares/jwt.middleware.js`) verifies the token, and on success attaches the user's `id` to `req.userId` — which downstream controllers use to scope queries (e.g., "my cart", "my likes"). Invalid or missing tokens return `401`.
 
@@ -346,18 +529,20 @@ curl http://localhost:3200/api/products -H "Authorization: <JWT-from-signin>"
 **Why this approach:** JWT is **stateless** — no server-side session store, so the API scales horizontally without sticky sessions or a session database. Combined with bcrypt-hashed passwords, it provides a solid, production-shaped auth flow. Hashing is centralized in a Mongoose `pre('save')` hook on `user.schema.js`, so the schema's password validator always sees the **plaintext** (and the hook re-hashes only when the password field actually changes).
 
 **Files involved:** `src/middlewares/jwt.middleware.js`, `src/features/user/user.controller.js`, `src/features/user/user.repository.js`, `src/features/user/user.schema.js`.
+
 </details>
 
 <details>
-<summary>🏗️ Repository Pattern</summary>
+<summary><b>🏗️ Repository Pattern</b></summary>
 
 **How it works:** Each feature owns a repository (`product.repository.js`, `user.repository.js`, `order.repository.js`, `like.repository.js`) that encapsulates every database operation. Controllers call repository methods instead of running queries themselves — e.g., `productController` delegates to `productRepository` for `find`, `filter`, `aggregate`, and `rate`.
 
 **Why this approach:** It decouples the HTTP/business layer from the persistence layer. Databases can be swapped or queries optimized without touching controllers, and repositories are trivially mockable in tests. This is the same separation major production codebases enforce.
+
 </details>
 
 <details>
-<summary>🚨 Global Error Handling (ApplicationError)</summary>
+<summary><b>🚨 Global Error Handling (ApplicationError)</b></summary>
 
 **How it works:** A custom `ApplicationError extends Error` (`src/error-handler/applicationError.js`) carries a `statusCode` alongside a message. Business logic throws `ApplicationError` instances; a single centralized error-handling middleware in `server.js` inspects the error type and returns the correct status:
 - Mongoose `ValidationError` → `400`
@@ -365,55 +550,68 @@ curl http://localhost:3200/api/products -H "Authorization: <JWT-from-signin>"
 - Anything else → `500`, while logging the stack via Winston
 
 **Why this approach:** It keeps `try/catch` blocks thin, gives clients consistent error shapes, and centralizes logging — so unexpected failures are both surfaced to the client and recorded for debugging in one place.
+
 </details>
 
 <details>
-<summary>📁 File Upload System</summary>
+<summary><b>📁 File Upload System</b></summary>
 
 **How it works:** `src/middlewares/fileupload.middleware.js` configures Multer with `diskStorage`. Product creation (`POST /api/products`) uses `upload.single("imageUrl")` to accept a `multipart/form-data` image. Uploaded files are saved to `./uploads/` with a **sanitized, timestamped filename** (colons in the ISO date are replaced with underscores to avoid invalid characters and collisions).
 
 **Why this approach:** Multer is the standard Express solution for `multipart/form-data`. Timestamp-prefixing prevents filename collisions and makes the stored artifacts human-readable and traceable.
+
 </details>
 
 <details>
-<summary>📄 Swagger Documentation</summary>
+<summary><b>📄 Swagger Documentation</b></summary>
 
 **How it works:** A complete OpenAPI 3.0 spec lives in `swagger.json` and is served by `swagger-ui-express` at `/api-docs` (mounted in `server.js`). Every endpoint documents its request/response schemas, auth requirement, and example payloads. The UI includes an **Authorize** button where you paste a token from `/signin` to interactively exercise protected routes.
 
 **Why this approach:** Self-documenting APIs dramatically lower the barrier to consumption — clients can explore and test the entire surface without reading source or installing tools.
+
 </details>
 
 <details>
-<summary>📊 Winston Logging</summary>
+<summary><b>📊 Winston Logging</b></summary>
 
 **How it works:** `src/middlewares/logger.middleware.js` creates a Winston logger writing **structured JSON** (with timestamp + service metadata) to `combined.log`. A `loggerMiddleware` logs method, URL, body, and timestamp for every request — but deliberately **skips the request body on `/signin` and `/signup`** to avoid leaking credentials into logs.
 
 **Why this approach:** Structured, level-aware logging is production hygiene. Filtering sensitive routes shows a security-conscious touch that matters to reviewers.
+
 </details>
 
 <details>
-<summary>❤️ Polymorphic Likes System</summary>
+<summary><b>❤️ Polymorphic Likes System</b></summary>
 
 **How it works:** The Likes feature uses Mongoose **`refPath`** — a single `likeSchema` where the `likeable` field references a model decided dynamically by the `types` field (`enum: ["Product", "Category"]`). The same Like document can point to either a product or a category. `like.schema.js` also demonstrates Mongoose **pre/post save and find hooks** for lifecycle logging.
 
 **Why this approach:** One schema handles liking multiple entity types instead of duplicating a Likes model per entity — a genuinely non-trivial Mongoose concept that showcases multiple references and middleware.
+
 </details>
 
 <details>
-<summary>💾 Atomic Order Placement (Transactions)</summary>
+<summary><b>💾 Atomic Order Placement (Transactions)</b></summary>
 
 **How it works:** `order.repository.js` uses the native MongoDB driver to start a **session + transaction**. It computes the order total via an aggregation pipeline (`$lookup` joining cart items to product prices, `$unwind`, `$addFields`), inserts the order, decrements product stock, clears the user's cart — all within one transaction. Any failure triggers `abortTransaction`, rolling everything back.
 
 **Why this approach:** Multi-step operations like "create order + decrement stock + clear cart" must be all-or-nothing. Transactions guarantee data integrity even under concurrent load — a strong signal of production-grade thinking.
+
 </details>
 
 <details>
-<summary>✅ Schema-Level Validation</summary>
+<summary><b>✅ Schema-Level Validation</b></summary>
 
 **How it works:** Mongoose schemas enforce rules at the model layer: email format regex, a **custom password validator** (≥8 chars with upper, lower & digit), enums for user type and like type, `min` constraints on price/quantity, and unique indexes. DB seeding (`mongooseConfig.js`) also auto-populates default categories on first connect.
 
 **Why this approach:** Validating at the schema boundary means invalid data can never reach the database, regardless of which controller writes it — defense in depth on top of controller checks.
+
 </details>
+
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
 
 ---
 
@@ -422,7 +620,7 @@ curl http://localhost:3200/api/products -H "Authorization: <JWT-from-signin>"
 The exact execution order in `server.js`, with the source file for each step:
 
 | # | Middleware | Source File | Role |
-|---|-----------|-------------|------|
+|:-:|-----------|-------------|------|
 | 1 | CORS | `server.js` (`cors`) | Restricts cross-origin access to the configured origin |
 | 2 | JSON body parser | `server.js` (`body-parser`) | Parses JSON request bodies |
 | 3 | Swagger docs | `server.js` (`swagger-ui-express`) | Serves the interactive API docs at `/api-docs` |
@@ -433,6 +631,12 @@ The exact execution order in `server.js`, with the source file for each step:
 | 8 | Global error handler | `server.js` | Centralized error response + Winston error logging |
 | 9 | Invalid-route handler | `src/middlewares/invalidRoutes.middleware.js` | Returns a uniform `404` JSON for unknown paths |
 
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
+
 ---
 
 ## 🧬 Data Models
@@ -440,7 +644,7 @@ The exact execution order in `server.js`, with the source file for each step:
 ### 🛍️ Product (`product.schema.js`)
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
+|-------|------|:--------:|-------------|
 | `name` | String | ✅ | Product name |
 | `description` | String | ✅ | Detailed product description |
 | `price` | Number | ✅ | Price (`min: 0`) |
@@ -451,14 +655,14 @@ The exact execution order in `server.js`, with the source file for each step:
 ### 🏷️ Category (`category.schema.js`)
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
+|-------|------|:--------:|-------------|
 | `name` | String | ✅ | Category name (`unique`) |
 | `products` | [ObjectId → Product] | ❌ | Many-to-many products in this category |
 
 ### ⭐ Review (`review.schema.js`)
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
+|-------|------|:--------:|-------------|
 | `productId` | ObjectId → Product | ❌ | The product being reviewed |
 | `userId` | ObjectId → User | ❌ | The reviewing user |
 | `rating` | Number | ✅ | Rating value (1–5) |
@@ -466,7 +670,7 @@ The exact execution order in `server.js`, with the source file for each step:
 ### 👤 User (`user.schema.js`)
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
+|-------|------|:--------:|-------------|
 | `name` | String | ✅ | User's full name |
 | `email` | String | ✅ | Unique email, validated by regex |
 | `password` | String | ✅ | Bcrypt-hashed; custom validator (≥8 chars, upper, lower, digit) |
@@ -475,7 +679,7 @@ The exact execution order in `server.js`, with the source file for each step:
 ### 🛒 CartItem (`cartItems.schema.js`)
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
+|-------|------|:--------:|-------------|
 | `productId` | ObjectId → Product | ✅ | The product in the cart |
 | `userId` | ObjectId → User | ✅ | The cart owner |
 | `quantity` | Number | ✅ | Quantity (`min: 1`) |
@@ -483,7 +687,7 @@ The exact execution order in `server.js`, with the source file for each step:
 ### ❤️ Like (`like.schema.js`)
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
+|-------|------|:--------:|-------------|
 | `user` | ObjectId → User | ❌ | The user who liked |
 | `likeable` | ObjectId (`refPath: "types"`) | ❌ | Polymorphic ref — Product **or** Category |
 | `types` | String | ✅ | `enum: ["Product", "Category"]`; drives the `refPath` |
@@ -492,10 +696,16 @@ The exact execution order in `server.js`, with the source file for each step:
 ### 📦 Order (`order.model.js` — plain model, written via native driver)
 
 | Field | Type | Required | Description |
-|-------|------|----------|-------------|
+|-------|------|:--------:|-------------|
 | `userId` | ObjectId | ✅ | The ordering user |
 | `totalAmount` | Number | ✅ | Computed order total |
 | `timeStamp` | Date | ✅ | Time the order was placed |
+
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
 
 ---
 
@@ -526,33 +736,66 @@ Business logic throws `ApplicationError(message, statusCode)`; a single global e
 **Common error codes:**
 
 | Status Code | Meaning | Typical Cause |
-|-------------|---------|---------------|
+|:-----------:|---------|---------------|
 | `400` | Bad Request | Validation failed, weak password, invalid input |
 | `401` | Unauthorized | Missing/invalid JWT, incorrect credentials |
 | `404` | Not Found | Resource or route not found |
 | `500` | Internal Server Error | Unexpected server failure (logged, generic message returned) |
 
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
+
 ---
 
 ## 🗺️ Future Roadmap
 
-| Feature | Priority | Status |
-|---------|----------|--------|
-| 🧪 Testing Suite (Jest + Supertest) | High | 🔴 Not Started |
-| 🔄 Refresh Token Mechanism | High | 🔴 Not Started |
-| 🏷️ Role-Based Access Control (enforce `seller`/`customer`) | High | 🔴 Not Started |
-| 🚦 Rate Limiting | High | 🔴 Not Started |
-| 💳 Payment Integration (Razorpay/Stripe) | Medium | 🔴 Not Started |
-| ⚡ Redis Caching | Medium | 🔴 Not Started |
-| 📄 Pagination | Medium | 🔴 Not Started |
-| 🔍 Full-Text Search | Medium | 🔴 Not Started |
-| 📧 Email Notifications (Nodemailer) | Medium | 🔴 Not Started |
-| 🖼️ Image Optimization (Sharp/Cloudinary) | Low | 🔴 Not Started |
-| 🐳 Docker Support | Medium | 🔴 Not Started |
-| 🔁 CI/CD Pipeline | Medium | 🔴 Not Started |
-| 👨‍💼 Admin Dashboard | Low | 🔴 Not Started |
-| 🔓 Token Blacklisting / Logout | Medium | 🔴 Not Started |
-| 📦 Product Variants & Inventory | Low | 🔴 Not Started |
+<details>
+<summary><b>🔴 High Priority</b></summary>
+
+| Feature | Priority | Status | Progress |
+|---------|:--------:|--------|:--------:|
+| 🧪 Testing Suite (Jest + Supertest) | High | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 🔄 Refresh Token Mechanism | High | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 🏷️ Role-Based Access Control (enforce `seller`/`customer`) | High | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 🚦 Rate Limiting | High | 🔴 Not Started | `░░░░░░░░░░` 0% |
+
+</details>
+
+<details>
+<summary><b>🟡 Medium Priority</b></summary>
+
+| Feature | Priority | Status | Progress |
+|---------|:--------:|--------|:--------:|
+| 💳 Payment Integration (Razorpay/Stripe) | Medium | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| ⚡ Redis Caching | Medium | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 📄 Pagination | Medium | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 🔍 Full-Text Search | Medium | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 📧 Email Notifications (Nodemailer) | Medium | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 🐳 Docker Support | Medium | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 🔁 CI/CD Pipeline | Medium | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 🔓 Token Blacklisting / Logout | Medium | 🔴 Not Started | `░░░░░░░░░░` 0% |
+
+</details>
+
+<details>
+<summary><b>🟢 Low Priority</b></summary>
+
+| Feature | Priority | Status | Progress |
+|---------|:--------:|--------|:--------:|
+| 🖼️ Image Optimization (Sharp/Cloudinary) | Low | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 👨‍💼 Admin Dashboard | Low | 🔴 Not Started | `░░░░░░░░░░` 0% |
+| 📦 Product Variants & Inventory | Low | 🔴 Not Started | `░░░░░░░░░░` 0% |
+
+</details>
+
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
 
 ---
 
@@ -572,21 +815,86 @@ main (stable)
 2. Make your changes and commit them with a clear message.
 3. Push to your branch and open a Pull Request against `main`.
 
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
+
 ---
 
 ## 👤 Author
 
-| | |
-|-|-|
-| **Author** | Mrutunjaya Panda |
-| **GitHub** | [@Mrutunjaya-Panda](https://github.com/Mrutunjaya-Panda) |
-| **Project** | E-Commerce REST API |
-| **Branch** | `feature/showcase-improvements` |
+<div align="center">
+
+<img src="https://github.com/Mrutunjaya-Panda.png?size=150" width="150" style="border-radius:50%;" alt="Mrutunjaya Panda" />
+
+### **Mrutunjaya Panda**
+
+**Full Stack Developer | Backend Enthusiast | API Architect**
+
+*Building scalable systems, one endpoint at a time.*
+
+<br />
+
+[![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Mrutunjaya-Panda)
+[![LinkedIn](https://img.shields.io/badge/-LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mrutunjaya-panda/)
+[![Email](https://img.shields.io/badge/-Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:pandamrutunjaya@gmail.com)
+
+<br />
+
+[![GitHub followers](https://img.shields.io/github/followers/Mrutunjaya-Panda?style=for-the-badge&color=blue)](https://github.com/Mrutunjaya-Panda?tab=followers)
+[![GitHub stars](https://img.shields.io/github/stars/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API?style=for-the-badge&color=yellow)](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API?style=for-the-badge&color=purple)](https://github.com/Mrutunjaya-Panda/E-Comm-Project-Using-REST-API/network/members)
+
+<br />
+
+<img src="https://github-readme-stats.vercel.app/api?username=Mrutunjaya-Panda&show_icons=true&theme=radical&hide_border=true&bg_color=0d1117&title_color=58a6ff&text_color=c9d1d9" width="48%" alt="GitHub Stats" />
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=Mrutunjaya-Panda&theme=radical&hide_border=true&background=0d1117&stroke=58a6ff&ring=58a6ff&fire=58a6ff&currStreakLabel=c9d1d9" width="48%" alt="GitHub Streak" />
+
+<br /><br />
+
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=Mrutunjaya-Panda&bg_color=0d1117&color=58a6ff&line=58a6ff&point=ffffff&area=true&area_color=1f6feb&hide_border=true" width="80%" alt="Activity Graph" />
+
+<br />
+
+> *"Code is like humor. When you have to explain it, it's bad."* — Cory House
+
+<br />
+
+**Project:** `E-Commerce REST API` &nbsp;|&nbsp; **Stack:** Node.js, Express, MongoDB, JWT
+
+<br />
+
+*"Crafted with ☕ and 💻"*
+
+</div>
+
+<div align="center">
+
+⬆️ [Back to Top](#-e-commerce-rest-api)
+
+</div>
 
 ---
 
 ## 📄 License
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+<div align="center">
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**⭐ If you found this project useful, consider giving it a star! ⭐**
+
+<img src="https://img.shields.io/badge/Made%20with-Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Made with Node.js" />
+<img src="https://img.shields.io/badge/Made%20with-❤️-red?style=for-the-badge" alt="Made with Love" />
+<img src="https://img.shields.io/badge/Made%20with-MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="Made with MongoDB" />
+
+</div>
+</div>

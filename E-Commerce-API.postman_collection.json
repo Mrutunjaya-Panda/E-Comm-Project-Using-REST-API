@@ -7,7 +7,7 @@
   "variable": [
     {
       "key": "baseUrl",
-      "value": "https://e-comm-project-using-rest-api.onrender.com",
+      "value": "https://e-comm-project-using-rest-api-1.onrender.com",
       "type": "string"
     },
     {
